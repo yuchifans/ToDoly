@@ -13,7 +13,7 @@ import java.util.HashMap;
  * It is used to recognise commands as they are typed in.
  *
  * @author Siqi Qian
- * @version 2018.09.12
+ * @version 2018.09.13
  */
 public class CommandMenu {
 
