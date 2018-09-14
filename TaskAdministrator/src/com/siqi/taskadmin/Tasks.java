@@ -10,23 +10,29 @@ import java.util.ArrayList;
  *
  */
 public class Tasks {
-	ArrayList<Task> tasks= new ArrayList<>();
+	private ArrayList<Task> tasksList;
 
 	
 	
 	public Tasks() {
-		
+		tasksList=new ArrayList<>();
 	}
 
 	public ArrayList<Task> getTasks() {
-		return tasks;
+		return tasksList;
 	}
 
-	public void setTasks(ArrayList<Task> tasks) {
-		this.tasks = tasks;
+	public void setTasks(ArrayList<Task> tasksList) {
+		this.tasksList = tasksList;
 	}
 	
-	public void loadTask() {
-		
+	public void add(Task task) {
+		tasksList.add(task);
+	}
+	
+	public void showAllTheTask() {
+		for(Task task: tasksList) {
+			System.out.println(task.getDetail());
+		}	
 	}
 }

@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class Task {
 	private String title;
-	private Date dueDate;
+	private String dueDate;
 	private String projectName;
 	private boolean status;
 	
@@ -17,10 +17,10 @@ public class Task {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Date getDuedate() {
+	public String getDuedate() {
 		return dueDate;
 	}
-	public void setDuedate(Date duedate) {
+	public void setDuedate(String duedate) {
 		this.dueDate = duedate;
 	}
 	public String getProject() {
