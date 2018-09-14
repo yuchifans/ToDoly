@@ -4,11 +4,11 @@ import java.util.Date;
 public class Task {
 	private String title;
 	private Date dueDate;
-	private Project project;
+	private String projectName;
 	private boolean status;
 	
 	public Task() {
-		project=new Project();
+		
 	}
 	
 	public String getTitle() {
@@ -23,11 +23,11 @@ public class Task {
 	public void setDuedate(Date duedate) {
 		this.dueDate = duedate;
 	}
-	public Project getProject() {
-		return project;
+	public String getProject() {
+		return projectName;
 	}
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProject(String projectName) {
+		this.projectName = projectName;
 	}
 	public boolean isStatus() {
 		return status;
@@ -36,6 +36,6 @@ public class Task {
 		this.status = status;
 	}
 	public String getDetail() {
-		return "Task title:"+title+"Duedate:"+dueDate+"Project name:"+project.getProjectName();
+		return "Task title:"+title+" Duedate:"+dueDate+" Project name:"+projectName+" Status:"+(status==true?"Completed" :"In progress" );
 	}
 }
