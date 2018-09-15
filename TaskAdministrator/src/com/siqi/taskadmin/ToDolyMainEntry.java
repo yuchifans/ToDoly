@@ -37,7 +37,8 @@ public class ToDolyMainEntry implements DialogGUI {
 			wantToQuit = true;
 			break;
 		case ADD:
-			System.out.println("add");
+			add();
+			wantToQuit = true;
 			break;
 		case EDIT:
 			System.out.println("edit");
@@ -64,7 +65,11 @@ public class ToDolyMainEntry implements DialogGUI {
 	private void show() {
 		TaskSortGUI taskSortGUI = new TaskSortGUI();
 		taskSortGUI.start();
-
+	}
+	
+	private void add() {
+		AddTaskGUI addTaskGUI = new AddTaskGUI();
+		addTaskGUI.start();
 	}
 
 	public static void main(String[] args) {

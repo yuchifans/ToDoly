@@ -8,11 +8,6 @@ public class Command {
 		this.commandWord = commandWord;
 	}
 
-	/**
-	 * Return the command word (the first word) of this command.
-	 * 
-	 * @return The command word.
-	 */
 	public CommandWord getCommandWord() {
 		return commandWord;
 	}

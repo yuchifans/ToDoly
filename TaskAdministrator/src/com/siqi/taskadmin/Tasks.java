@@ -11,9 +11,8 @@ import java.util.ArrayList;
  */
 public class Tasks {
 	private ArrayList<Task> tasksList;
+	public static int TaskNumber;
 
-	
-	
 	public Tasks() {
 		tasksList=new ArrayList<>();
 	}

@@ -33,7 +33,7 @@ public class CommandParser {
 		System.out.print("> "); // print prompt
 		InputCommandWord = reader.nextLine();
 	}
-
+	
 	public Command getTopMenuCommand() {
 		readCommand();
 		if (isInteger(InputCommandWord) && !InputCommandWord.equals("")) {

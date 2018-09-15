@@ -4,8 +4,6 @@ public class Project {
 	private String projectName;
 	private String description;
 	
-	
-	
 	public String getProjectName() {
 		return projectName;
 	}
