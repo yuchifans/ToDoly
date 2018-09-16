@@ -30,6 +30,7 @@ public class Tasks {
 	}
 	
 	public void showAllTheTask() {
+		System.out.println("Task Detail:");
 		for(Task task: tasksList) {
 			System.out.println(task.getDetail());
 		}	

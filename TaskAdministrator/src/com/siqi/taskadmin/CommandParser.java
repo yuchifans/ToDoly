@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
  * @version 2018.9.13
  */
 public class CommandParser {
-	private CommandMenu commandMenu; // holds all valid command words
-	private Scanner reader; // source of command input
+	private CommandMenu commandMenu; 
+	private Scanner reader; 
 	private String InputCommandWord;
 	
 	public CommandParser() {
@@ -29,8 +29,7 @@ public class CommandParser {
 	}
 	
 	private void readCommand() {
-		 // will hold the full input line
-		System.out.print("> "); // print prompt
+		System.out.print("> "); 
 		InputCommandWord = reader.nextLine();
 	}
 	

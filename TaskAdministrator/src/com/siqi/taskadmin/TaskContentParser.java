@@ -9,8 +9,7 @@ public class TaskContentParser {
 		reader = new Scanner(System.in);
 	}
 	public String readTaskContent() {
-		 // will hold the full input line
-		System.out.print("> "); // print prompt
+		System.out.print("> "); 
 		inputContent = reader.nextLine();
 		return inputContent;
 	}

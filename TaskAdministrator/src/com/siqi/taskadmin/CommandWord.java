@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 public enum CommandWord {
 
-	SHOW(0, 0, "Show task List(By date or project)"), ADD(0, 1, "Add new task"), EDIT(0, 2, "Edit task"),
-	SAVE(0, 3, "Save and quit"), QUIT(2, 4, "quit"), HELP(2, 5, "help"), UNKNOWN(2, 6, "?"), BYDATE(1, 0, "By date"),
-	BYPROJECT(1, 1, "By project");
+	SHOW(0, 0, "Show All Tasks(By date or project)"), ADD(0, 1, "Add new task"), QUIT(0, 2, "Quit"),
+	BYDATE(1, 0, "By date"),BYPROJECT(1, 1, "By project"),SAVEANDRETURN(1,0,"Save and return"), QUITANDRETURN(1,1,"Quit and return"),
+	RETURNTOMAIN(2,2,"Return"), REMOVE(2, 0, "Remove task"),EDIT(2,1,"Edit Task"),UNKNOWN(-1, 6, "?");
 
 	private int commandType;
 	private int commandIndex;

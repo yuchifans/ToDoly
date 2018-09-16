@@ -26,9 +26,19 @@ public class CommandMenu {
 		CommandWord.SHOW.getChildCommandWords().clear();
 		CommandWord.SHOW.addChildCommand(CommandWord.BYDATE);
 		CommandWord.SHOW.addChildCommand(CommandWord.BYPROJECT);
+		CommandWord.BYDATE.getChildCommandWords().clear();
+		CommandWord.BYDATE.addChildCommand(CommandWord.REMOVE);
+		CommandWord.BYDATE.addChildCommand(CommandWord.EDIT);
+		CommandWord.BYDATE.addChildCommand(CommandWord.RETURNTOMAIN);
+		CommandWord.BYPROJECT.getChildCommandWords().clear();
+		CommandWord.BYPROJECT.addChildCommand(CommandWord.REMOVE);
+		CommandWord.BYPROJECT.addChildCommand(CommandWord.EDIT);
+		CommandWord.BYPROJECT.addChildCommand(CommandWord.RETURNTOMAIN);
 		commandMenu.put(2, CommandWord.ADD);
-		commandMenu.put(3, CommandWord.EDIT);
-		commandMenu.put(4, CommandWord.SAVE);
+		CommandWord.ADD.getChildCommandWords().clear();
+		CommandWord.ADD.addChildCommand(CommandWord.SAVEANDRETURN);
+		CommandWord.ADD.addChildCommand(CommandWord.QUITANDRETURN);
+		commandMenu.put(3, CommandWord.QUIT);
 	}
 
 	/**
@@ -56,18 +66,20 @@ public class CommandMenu {
 	}
 
 	public void printTopMenu() {
+		System.out.println("Pick an option:");
 		for (int commandIndex : commandMenu.keySet()) {
 			System.out.println("(" + commandIndex + ") " + commandMenu.get(commandIndex).toString());
 		}
-		System.out.println("Just input a number from 1 to " + commandMenu.size());
+		System.out.println("Hint: Just input a number from 1 to " + commandMenu.size());
 	}
 
-	public void printSecondLevelMenu(CommandWord commandWord) {
+	public void printChildMenu(CommandWord commandWord) {
+		System.out.println("Pick an option:");
 		HashMap<Integer,CommandWord> childMenu= commandWord.getChildCommandWords();
 		for (int commandIndex : childMenu.keySet()) {
 			System.out.println("(" + commandIndex + ") " + childMenu.get(commandIndex).toString());
 		}
-		System.out.println("Just input a number of from 1 to "+ childMenu.size());
+		System.out.println("Hint: Just input a number of from 1 to "+ childMenu.size());
 	}
 
 }

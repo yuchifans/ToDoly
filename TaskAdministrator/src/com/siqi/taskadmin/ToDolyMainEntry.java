@@ -15,9 +15,6 @@ public class ToDolyMainEntry implements DialogGUI {
 
 		printWelcome();
 
-		// Enter the main command loop. Here we repeatedly read commands and
-		// execute them until the game is over.
-
 		boolean finished = false;
 		while (!finished) {
 			Command command = commandParser.getTopMenuCommand();
@@ -40,10 +37,7 @@ public class ToDolyMainEntry implements DialogGUI {
 			add();
 			wantToQuit = true;
 			break;
-		case EDIT:
-			System.out.println("edit");
-			break;
-		case SAVE:
+		case QUIT:
 			wantToQuit = quit(command);
 			break;
 		}
@@ -53,7 +47,6 @@ public class ToDolyMainEntry implements DialogGUI {
 	private void printWelcome() {
 		System.out.println();
 		System.out.println("Welcome to ToDoly!");
-		System.out.println("Pick an option:");
 		topMenu.printTopMenu();
 	}
 
@@ -63,11 +56,13 @@ public class ToDolyMainEntry implements DialogGUI {
 	}
 
 	private void show() {
+		System.out.println("------------------------------------------------------------------------------");
 		TaskSortGUI taskSortGUI = new TaskSortGUI();
 		taskSortGUI.start();
 	}
 	
 	private void add() {
+		System.out.println("------------------------------------------------------------------------------");
 		AddTaskGUI addTaskGUI = new AddTaskGUI();
 		addTaskGUI.start();
 	}

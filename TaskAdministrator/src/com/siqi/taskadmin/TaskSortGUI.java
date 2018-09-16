@@ -1,20 +1,16 @@
 package com.siqi.taskadmin;
 
-import java.util.ArrayList;
-
 public class TaskSortGUI implements DialogGUI {
-	private CommandMenu secondLevelMenuOfShow;
+	private CommandMenu childMenuOfShow;
 	private CommandParser commandParser;
-	private TaskDataProcessor dataProcessor;
 
 	public TaskSortGUI() {
 		commandParser = new CommandParser();
-		secondLevelMenuOfShow = new CommandMenu();
-		dataProcessor = new TaskDataProcessor();
+		childMenuOfShow = new CommandMenu();
 	}
 
 	public void start() {
-		secondLevelMenuOfShow.printSecondLevelMenu(CommandWord.SHOW);
+		childMenuOfShow.printChildMenu(CommandWord.SHOW);
 		boolean finished = false;
 		while (!finished) {
 			Command command = commandParser.getChildMenuCommand(CommandWord.SHOW);
@@ -30,21 +26,28 @@ public class TaskSortGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case BYDATE:
-			dataProcessor.load();
-			Tasks tasks = dataProcessor.read();
-			if (tasks != null) {
-				tasks.showAllTheTask();
-			} else {
-				System.out.println("There is no task currently!");
-			}
-				wantToQuit = true;
+			showTaskBydate();
+			wantToQuit = true;
 			break;
 		case BYPROJECT:
-			System.out.println("BYPROJECT");
+			showTaskByProject();
 			wantToQuit = true;
 			break;
 		}
 		return wantToQuit;
+	}
+	
+	private void showTaskBydate() 
+	{
+		System.out.println("------------------------------------------------------------------------------");
+		ShowTaskByDateGUI showTaskByDate=new ShowTaskByDateGUI();
+		showTaskByDate.start();
+	}
+	
+	private void showTaskByProject() {
+		System.out.println("------------------------------------------------------------------------------");
+		ShowTaskByProjectGUI showTaskByProject=new ShowTaskByProjectGUI();
+		showTaskByProject.start();
 	}
 
 }
