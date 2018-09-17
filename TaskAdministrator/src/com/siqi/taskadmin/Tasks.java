@@ -4,20 +4,21 @@
 package com.siqi.taskadmin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author tmp-sda-1162
  *
  */
 public class Tasks {
-	private ArrayList<Task> tasksList;
+	private List<Task> tasksList;
 	public static int TaskNumber;
 
 	public Tasks() {
 		tasksList=new ArrayList<>();
 	}
 
-	public ArrayList<Task> getTasks() {
+	public List<Task> getTasks() {
 		return tasksList;
 	}
 

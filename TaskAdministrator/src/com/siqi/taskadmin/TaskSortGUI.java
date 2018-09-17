@@ -30,7 +30,7 @@ public class TaskSortGUI implements DialogGUI {
 			wantToQuit = true;
 			break;
 		case BYPROJECT:
-			showTaskByProject();
+			filterTaskByProject();
 			wantToQuit = true;
 			break;
 		}
@@ -44,9 +44,9 @@ public class TaskSortGUI implements DialogGUI {
 		showTaskByDate.start();
 	}
 	
-	private void showTaskByProject() {
+	private void filterTaskByProject() {
 		System.out.println("------------------------------------------------------------------------------");
-		ShowTaskByProjectGUI showTaskByProject=new ShowTaskByProjectGUI();
+		FilterTaskByProjectGUI showTaskByProject=new FilterTaskByProjectGUI();
 		showTaskByProject.start();
 	}
 

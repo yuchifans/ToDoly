@@ -8,6 +8,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,8 +29,8 @@ public class TaskDataProcessor {
 
 	public TaskDataProcessor() {
 		jsonStr = new StringBuilder();
-		json= new JSONObject();
-		jsonMembers=new JSONArray();
+		json = new JSONObject();
+		jsonMembers = new JSONArray();
 	}
 
 	private boolean getFile() {
@@ -65,19 +69,19 @@ public class TaskDataProcessor {
 			if (!jsonStr.toString().equals("")) {
 				try {
 					json = new JSONObject(jsonStr.toString());
-					jsonMembers = json.getJSONArray("tasks");		
+					jsonMembers = json.getJSONArray("tasks");
 				} catch (JSONException ex) {
-					ex.printStackTrace();	
-				}	
-			} 	
+					ex.printStackTrace();
+				}
+			}
 		}
 	}
 
-	public Tasks read() {
+	private void read() {
 		task = new Task();
 		tasks = new Tasks();
 		for (int i = 0; i < jsonMembers.length(); i++) {
-			JSONObject taskJson=new JSONObject();
+			JSONObject taskJson = new JSONObject();
 			try {
 				taskJson = (JSONObject) jsonMembers.get(i);
 				task = new Task();
@@ -93,10 +97,61 @@ public class TaskDataProcessor {
 				tasks.add(task);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
 			}
 		}
-		return tasks;
+	}
+
+	public Tasks sortByDate() {
+		read();
+		if (tasks != null) {
+			try {
+				Collections.sort(tasks.getTasks(), new Comparator<Task>() {
+					public int compare(Task task1, Task task2) {
+						String[] tempDate1 = task1.getDuedate().split("-");
+						String[] tempDate2 = task2.getDuedate().split("-");
+						int[] date1 = new int[tempDate1.length];
+						int[] date2 = new int[tempDate2.length];
+
+						for (int i = 0; i < date1.length; i++) {
+							date1[i] = Integer.parseInt(tempDate1[i]);
+						}
+						for (int i = 0; i < date1.length; i++) {
+							date2[i] = Integer.parseInt(tempDate2[i]);
+						}
+
+						if (date1[0] > date2[0]) {
+							return -1;
+						} else if (date1[0] == date2[0]) {
+							if (date1[1] > date2[1]) {
+								return -1;
+							} else if (date1[1] == date2[1]) {
+								if (date1[2] > date2[2]) {
+									return -1;
+								} else if (date1[2] == date2[2]) {
+									return 0;
+								} else {
+									return 1;
+								}
+							} else {
+								return 1;
+							}
+						} else {
+							return 1;
+						}
+					}
+				});
+
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+			return tasks;
+		} else {
+			return null;
+		}
+	}
+
+	public void sortByProject() {
+
 	}
 
 	public void add(Task task) {
@@ -106,10 +161,10 @@ public class TaskDataProcessor {
 			member.put("title", task.getTitle());
 			member.put("dueDate", task.getDuedate());
 			member.put("projectName", task.getProject());
-			member.put("status", task.isStatus()==true?"1":"0");
+			member.put("status", task.isStatus() == true ? "1" : "0");
 			jsonMembers.put(member);
 			json.put("tasks", jsonMembers);
-		
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -121,5 +176,14 @@ public class TaskDataProcessor {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public Tasks filterByProject(String projectName) {
+		read();
+		tasks=sortByDate();
+		ArrayList<Task> filteredTasks = tasks.getTasks().stream().filter(t -> t.getProject().contains(projectName))
+				.collect(Collectors.toCollection(ArrayList::new));
+		tasks.setTasks(filteredTasks);
+		return tasks;
 	}
 }

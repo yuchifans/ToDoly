@@ -1,32 +1,37 @@
 package com.siqi.taskadmin;
 
-public class ShowTaskByDateGUI implements DialogGUI {
-	private CommandMenu childMenuOfByDate;
-	private CommandParser commandParser;
+public class FilterTaskByProjectGUI implements DialogGUI {
 	private TaskDataProcessor dataProcessor;
+	private ProjectNameParser projectNameParser;
+	private CommandMenu childMenuOfFilterProject;
+	private CommandParser commandParser;
 	
-	ShowTaskByDateGUI(){
-		commandParser = new CommandParser();
-		childMenuOfByDate = new CommandMenu();
-		dataProcessor = new TaskDataProcessor();
+	public FilterTaskByProjectGUI() {
+		dataProcessor = new TaskDataProcessor();	
+		projectNameParser=new ProjectNameParser();
+		childMenuOfFilterProject= new CommandMenu();
+		commandParser= new CommandParser();
 	}
 	
 	public void start() {
+		System.out.println("Please input project name: ");
+		String projectName=projectNameParser.readProjectName();
 		dataProcessor.load();
-		Tasks tasks=dataProcessor.sortByDate();
+		Tasks tasks=dataProcessor.filterByProject(projectName);
 		if (tasks != null) {
 			tasks.showAllTheTask();
-			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
+			childMenuOfFilterProject.printChildMenu(CommandWord.BYPROJECT);
 		} else {
 			System.out.println("There is no task currently!");
 		}
 		boolean finished = false;
 		while (!finished) {
-			Command command = commandParser.getChildMenuCommand(CommandWord.BYDATE);
+			Command command = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
 			finished = processCommand(command);
 		}
 	}
 
+	
 	public boolean processCommand(Command command) {
 		boolean wantToQuit = false;
 		CommandWord commandWord = command.getCommandWord();
@@ -44,8 +49,9 @@ public class ShowTaskByDateGUI implements DialogGUI {
 			returnToMain();
 			break;
 		}
-		return wantToQuit;	
+		return wantToQuit;
 	}
+	
 	private void returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
 		ToDolyMainEntry main = new ToDolyMainEntry();
