@@ -81,5 +81,11 @@ public class CommandMenu {
 		}
 		System.out.println("Hint: Just input a number of from 1 to "+ childMenu.size());
 	}
+	
+	public void printSingleCommand(CommandWord commandWord) {
+		System.out.println("Pick an option:");
+		System.out.println("(1) "+commandWord.toString());
+	}
+	
 
 }

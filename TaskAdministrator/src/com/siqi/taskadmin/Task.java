@@ -45,6 +45,6 @@ public class Task {
 		this.status = status;
 	}
 	public String getDetail() {
-		return "("+id+") Task title:"+title+" Duedate:"+dueDate+" Project name:"+projectName+" Status:"+(status==true?"Completed" :"In progress" );
+		return "(TaskId: "+id+") Task title:"+title+" Duedate:"+dueDate+" Project name:"+projectName+" Status:"+(status==true?"Completed" :"In progress" );
 	}
 }

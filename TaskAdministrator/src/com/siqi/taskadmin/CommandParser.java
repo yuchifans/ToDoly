@@ -35,7 +35,7 @@ public class CommandParser {
 	
 	public Command getTopMenuCommand() {
 		readCommand();
-		if (isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
+		if (DataUtil.isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
 			return new Command(commandMenu.getCommandWord(Integer.parseInt(InputCommandWord)));
 		}
 		return new Command(CommandWord.UNKNOWN);
@@ -43,18 +43,12 @@ public class CommandParser {
 	
 	public Command getChildMenuCommand(CommandWord commandWord) {
 		readCommand();
-		if (isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
+		if (DataUtil.isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
 			return new Command(commandWord.getSingleChildCommandWord(Integer.parseInt(InputCommandWord)));
 		}
 		return new Command(CommandWord.UNKNOWN);
 	}
 
-	
-
-	private static boolean isInteger(String str) {
-		Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
-		return pattern.matcher(str).matches();
-	}
 	
 	
 

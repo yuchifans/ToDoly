@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TaskDataProcessor {
+	private int biggestId;
 	private File file;
 	private JSONObject json;
 	private JSONArray jsonMembers;
@@ -31,6 +32,7 @@ public class TaskDataProcessor {
 		jsonStr = new StringBuilder();
 		json = new JSONObject();
 		jsonMembers = new JSONArray();
+		biggestId = 0;
 	}
 
 	private boolean getFile() {
@@ -70,6 +72,9 @@ public class TaskDataProcessor {
 				try {
 					json = new JSONObject(jsonStr.toString());
 					jsonMembers = json.getJSONArray("tasks");
+					if (json.has("biggestID")) {
+						biggestId = json.getInt("biggestID");
+					}
 				} catch (JSONException ex) {
 					ex.printStackTrace();
 				}
@@ -149,13 +154,30 @@ public class TaskDataProcessor {
 			return null;
 		}
 	}
-
-	public void sortByProject() {
-
+	public boolean remove(int taskId) {
+		boolean isSuccess=false;
+		read();
+		for(int i=0;i<jsonMembers.length();i++) {
+			try {
+				JSONObject member=(JSONObject)jsonMembers.get(i);
+				if(member.getInt("taskId")==taskId) {
+					jsonMembers.remove(i);
+					isSuccess=true;
+					String jsonStr = json.toString();
+					write(jsonStr);
+					System.out.println("Task has been removed!");
+					return isSuccess;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return isSuccess;
 	}
 
 	public void add(Task task) {
 		try {
+			
 			JSONObject member = new JSONObject();
 			member.put("taskId", task.getId());
 			member.put("title", task.getTitle());
@@ -164,11 +186,17 @@ public class TaskDataProcessor {
 			member.put("status", task.isStatus() == true ? "1" : "0");
 			jsonMembers.put(member);
 			json.put("tasks", jsonMembers);
+			json.put("biggestID", biggestId);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		String jsonStr = json.toString();
+		write(jsonStr);
+		
+	}
+	
+	private void write(String jsonStr) {
 		try {
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			writer.write(jsonStr);
@@ -180,10 +208,20 @@ public class TaskDataProcessor {
 
 	public Tasks filterByProject(String projectName) {
 		read();
-		tasks=sortByDate();
+		tasks = sortByDate();
 		ArrayList<Task> filteredTasks = tasks.getTasks().stream().filter(t -> t.getProject().contains(projectName))
 				.collect(Collectors.toCollection(ArrayList::new));
 		tasks.setTasks(filteredTasks);
 		return tasks;
 	}
+	
+	public void idIncrement() {
+		biggestId+=1;
+	}
+	public int getBiggestId() {
+		System.out.println(biggestId);
+		return biggestId;
+	}
+
+
 }

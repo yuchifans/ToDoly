@@ -1,24 +1,30 @@
 package com.siqi.taskadmin;
 
+import java.util.ArrayList;
+
 public class ShowTaskByDateGUI implements DialogGUI {
 	private CommandMenu childMenuOfByDate;
 	private CommandParser commandParser;
 	private TaskDataProcessor dataProcessor;
+	private Tasks tasks;
+	
 	
 	ShowTaskByDateGUI(){
 		commandParser = new CommandParser();
 		childMenuOfByDate = new CommandMenu();
 		dataProcessor = new TaskDataProcessor();
+		tasks=new Tasks();
 	}
 	
 	public void start() {
 		dataProcessor.load();
-		Tasks tasks=dataProcessor.sortByDate();
-		if (tasks != null) {
+		tasks=dataProcessor.sortByDate();
+		if (tasks!=null&&tasks.getNumberOfTask()!=0) {
 			tasks.showAllTheTask();
 			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
 		} else {
 			System.out.println("There is no task currently!");
+			returnToMain();
 		}
 		boolean finished = false;
 		while (!finished) {
@@ -38,6 +44,7 @@ public class ShowTaskByDateGUI implements DialogGUI {
 			wantToQuit = true;
 			break;
 		case REMOVE:
+			remove();
 			wantToQuit = true;
 			break;
 		case RETURNTOMAIN:
@@ -51,5 +58,14 @@ public class ShowTaskByDateGUI implements DialogGUI {
 		ToDolyMainEntry main = new ToDolyMainEntry();
 		main.start();
 	}
+	
+	private void remove() {
+		System.out.println("------------------------------------------------------------------------------");
+		ArrayList<Task> tasksTmp=(ArrayList<Task>)tasks.getTasks();
+		RemoveTaskGUI removeTaskGUI=new RemoveTaskGUI(tasksTmp);
+		removeTaskGUI.start();	
+	}
+	
+	
 
 }

@@ -27,8 +27,7 @@ public class AddTaskGUI implements DialogGUI {
 	}
 
 	private void getTaskItem() {
-		Tasks.TaskNumber += 1;
-		task.setId(Tasks.TaskNumber);
+		dataProcessor.load();
 		System.out.println("TaskTitle: ");
 		String taskTitle = taskContentParser.readTaskContent();
 		task.setTitle(taskTitle);
@@ -49,6 +48,8 @@ public class AddTaskGUI implements DialogGUI {
 			break;
 		case SAVEANDRETURN:
 			dataProcessor.load();
+			dataProcessor.idIncrement();
+			task.setId(dataProcessor.getBiggestId());
 			dataProcessor.add(task);
 			returnToMain();
 			wantToQuit = true;

@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class Tasks {
 	private List<Task> tasksList;
-	public static int TaskNumber;
 
 	public Tasks() {
 		tasksList=new ArrayList<>();
@@ -28,6 +27,19 @@ public class Tasks {
 	
 	public void add(Task task) {
 		tasksList.add(task);
+	}
+	
+	public void removeById(int taskId) {
+		
+		for(Task task:tasksList) {
+			if(task.getId()==taskId) {
+				tasksList.remove(task);
+			}
+		}
+	}
+	
+	public int getNumberOfTask() {
+		return tasksList.size();
 	}
 	
 	public void showAllTheTask() {
