@@ -8,20 +8,20 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 	private CommandMenu childMenuOfFilterProject;
 	private CommandParser commandParser;
 	private Tasks tasks;
-	
+
 	public FilterTaskByProjectGUI() {
 		dataProcessor = new TaskDataProcessor();
 		projectNameParser = new ProjectNameParser();
 		childMenuOfFilterProject = new CommandMenu();
 		commandParser = new CommandParser();
-		tasks=new Tasks();
+		tasks = new Tasks();
 	}
 
 	public void start() {
 		System.out.println("Please input project name: ");
 		String projectName = projectNameParser.readProjectName();
 		dataProcessor.load();
-		Tasks tasks = dataProcessor.filterByProject(projectName);
+		tasks = dataProcessor.filterByProject(projectName);
 		boolean finished = false;
 		if (tasks != null && tasks.getNumberOfTask() != 0) {
 			tasks.showAllTheTask();
@@ -53,6 +53,7 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 			break;
 		case RETURNTOMAIN:
 			returnToMain();
+			wantToQuit = true;
 			break;
 		}
 		return wantToQuit;
@@ -66,9 +67,9 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 
 	private void remove() {
 		System.out.println("------------------------------------------------------------------------------");
-		ArrayList<Task> tasksTmp=(ArrayList<Task>)tasks.getTasks();
-		RemoveTaskGUI removeTaskGUI=new RemoveTaskGUI(tasksTmp);
-		removeTaskGUI.start();	
+		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
+		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasksTmp);
+		removeTaskGUI.start();
 	}
 
 }

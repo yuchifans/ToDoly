@@ -7,30 +7,30 @@ public class ShowTaskByDateGUI implements DialogGUI {
 	private CommandParser commandParser;
 	private TaskDataProcessor dataProcessor;
 	private Tasks tasks;
-	
-	
-	ShowTaskByDateGUI(){
+
+	ShowTaskByDateGUI() {
 		commandParser = new CommandParser();
 		childMenuOfByDate = new CommandMenu();
 		dataProcessor = new TaskDataProcessor();
-		tasks=new Tasks();
+		tasks = new Tasks();
 	}
-	
+
 	public void start() {
 		dataProcessor.load();
-		tasks=dataProcessor.sortByDate();
-		if (tasks!=null&&tasks.getNumberOfTask()!=0) {
+		tasks = dataProcessor.sortByDate();
+		if (tasks != null && tasks.getNumberOfTask() != 0) {
 			tasks.showAllTheTask();
 			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
+			boolean finished = false;
+			while (!finished) {
+				Command command = commandParser.getChildMenuCommand(CommandWord.BYDATE);
+				finished = processCommand(command);
+			}
 		} else {
 			System.out.println("There is no task currently!");
 			returnToMain();
 		}
-		boolean finished = false;
-		while (!finished) {
-			Command command = commandParser.getChildMenuCommand(CommandWord.BYDATE);
-			finished = processCommand(command);
-		}
+		
 	}
 
 	public boolean processCommand(Command command) {
@@ -49,23 +49,23 @@ public class ShowTaskByDateGUI implements DialogGUI {
 			break;
 		case RETURNTOMAIN:
 			returnToMain();
+			wantToQuit = true;
 			break;
 		}
-		return wantToQuit;	
+		return wantToQuit;
 	}
+
 	private void returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
 		ToDolyMainEntry main = new ToDolyMainEntry();
 		main.start();
 	}
-	
+
 	private void remove() {
 		System.out.println("------------------------------------------------------------------------------");
-		ArrayList<Task> tasksTmp=(ArrayList<Task>)tasks.getTasks();
-		RemoveTaskGUI removeTaskGUI=new RemoveTaskGUI(tasksTmp);
-		removeTaskGUI.start();	
+		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
+		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasksTmp);
+		removeTaskGUI.start();
 	}
-	
-	
 
 }
