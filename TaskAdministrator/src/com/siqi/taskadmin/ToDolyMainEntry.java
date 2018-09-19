@@ -5,10 +5,15 @@ public class ToDolyMainEntry implements DialogGUI {
 	final static int TOPLEVEL = 0;
 	private CommandParser commandParser;
 	private CommandMenu topMenu;
+	private TaskDataProcessor taskDataProcessor;
+	private int[] tasksNumberBystatus;
+	
 
 	ToDolyMainEntry() {
 		commandParser = new CommandParser();
 		topMenu = new CommandMenu();
+		taskDataProcessor=new TaskDataProcessor();
+		tasksNumberBystatus=new int[2];
 	}
 
 	public void start() {
@@ -45,8 +50,11 @@ public class ToDolyMainEntry implements DialogGUI {
 	}
 
 	private void printWelcome() {
+		taskDataProcessor.load();
+		tasksNumberBystatus=taskDataProcessor.getNumberOfTasksByStatus();
 		System.out.println();
 		System.out.println("Welcome to ToDoly!");
+		System.out.println("You have "+tasksNumberBystatus[0]+" tasks todo and "+tasksNumberBystatus[1]+" tasks done.");
 		topMenu.printTopMenu();
 	}
 

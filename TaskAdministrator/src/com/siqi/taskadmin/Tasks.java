@@ -48,4 +48,16 @@ public class Tasks {
 			System.out.println(task.getDetail());
 		}	
 	}
+	
+	public int[] getNumberOfTaskByStatus() {
+		int[] taskNumber=new int[2];
+		for(Task task: tasksList) {
+			if(task.isStatus()==false) {
+				taskNumber[0]++;
+			}else {
+				taskNumber[1]++;
+			}
+		}	
+		return taskNumber;
+	}
 }

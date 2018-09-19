@@ -94,7 +94,7 @@ public class TaskDataProcessor {
 				task.setTitle((String) taskJson.get("title"));
 				task.setDuedate((String) taskJson.get("dueDate"));
 				task.setProject((String) taskJson.get("projectName"));
-				if (((String) taskJson.get("status")).equals("true")) {
+				if (((String) taskJson.get("status")).equals("1")) {
 					task.setStatus(true);
 				} else {
 					task.setStatus(false);
@@ -154,15 +154,35 @@ public class TaskDataProcessor {
 			return null;
 		}
 	}
-	public boolean remove(int taskId) {
-		boolean isSuccess=false;
-		read();
-		for(int i=0;i<jsonMembers.length();i++) {
+
+	public int[] getNumberOfTasksByStatus() {
+		int[] tasksNumber = new int[2];
+		JSONObject task;
+		for (int i = 0; i < jsonMembers.length(); i++) {
 			try {
-				JSONObject member=(JSONObject)jsonMembers.get(i);
-				if(member.getInt("taskId")==taskId) {
+				task = (JSONObject) jsonMembers.get(i);
+				if (task.get("status").equals("0")) {
+					tasksNumber[0]++;
+				} else if (task.get("status").equals("1")) {
+					tasksNumber[1]++;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return tasksNumber;
+	}
+
+	public boolean remove(int taskId) {
+		boolean isSuccess = false;
+		read();
+		for (int i = 0; i < jsonMembers.length(); i++) {
+			try {
+				JSONObject member = (JSONObject) jsonMembers.get(i);
+				if (member.getInt("taskId") == taskId) {
 					jsonMembers.remove(i);
-					isSuccess=true;
+					isSuccess = true;
 					String jsonStr = json.toString();
 					write(jsonStr);
 					System.out.println("Task has been removed!");
@@ -177,7 +197,7 @@ public class TaskDataProcessor {
 
 	public void add(Task task) {
 		try {
-			
+
 			JSONObject member = new JSONObject();
 			member.put("taskId", task.getId());
 			member.put("title", task.getTitle());
@@ -193,9 +213,9 @@ public class TaskDataProcessor {
 		}
 		String jsonStr = json.toString();
 		write(jsonStr);
-		
+
 	}
-	
+
 	private void write(String jsonStr) {
 		try {
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -214,14 +234,14 @@ public class TaskDataProcessor {
 		tasks.setTasks(filteredTasks);
 		return tasks;
 	}
-	
+
 	public void idIncrement() {
-		biggestId+=1;
+		biggestId += 1;
 	}
+
 	public int getBiggestId() {
 		System.out.println(biggestId);
 		return biggestId;
 	}
-
 
 }
