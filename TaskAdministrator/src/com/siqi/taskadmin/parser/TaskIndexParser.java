@@ -2,10 +2,10 @@ package com.siqi.taskadmin.parser;
 
 import java.util.Scanner;
 
-public class RemoveTaskParser {
+public class TaskIndexParser {
 	private Scanner reader; 
 	private String taskId;
-	public RemoveTaskParser() {
+	public TaskIndexParser() {
 		reader = new Scanner(System.in);
 	}
 	
@@ -14,5 +14,4 @@ public class RemoveTaskParser {
 		taskId = reader.nextLine();
 		return taskId;
 	}
-
 }

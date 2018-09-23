@@ -2,9 +2,9 @@ package com.siqi.taskadmin.GUI;
 
 
 import com.siqi.taskadmin.ToDolyMainEntry;
-import com.siqi.taskadmin.data.TaskDataProcessor;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.controller.TasksAdmin;
 import com.siqi.taskadmin.parser.Command;
 import com.siqi.taskadmin.parser.CommandParser;
 import com.siqi.taskadmin.parser.CommandWord;
@@ -15,15 +15,15 @@ public class AddTaskGUI implements DialogGUI {
 	private CommandMenu childMenuOfShow;
 	private CommandParser commandParser;
 	private TaskContentParser taskContentParser;
-	private TaskDataProcessor dataProcessor;
 	private Task task;
+	private TasksAdmin tasksAdmin;
 
 	public AddTaskGUI() {
 		commandParser = new CommandParser();
 		childMenuOfShow = new CommandMenu();
 		taskContentParser = new TaskContentParser();
-		dataProcessor = new TaskDataProcessor();
 		task = new Task();
+		tasksAdmin= new TasksAdmin();
 	}
 
 	public void start() {
@@ -34,24 +34,23 @@ public class AddTaskGUI implements DialogGUI {
 			Command command = commandParser.getChildMenuCommand(CommandWord.ADD);
 			finished = processCommand(command);
 		}
-
 	}
 
 	private void getTaskItem() {
-		dataProcessor.load();
-		System.out.println("TaskTitle: ");
+		System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
 		String taskTitle = taskContentParser.readTaskContent();
-		task.setTitle(taskTitle);
-		System.out.println("DueDate: YYYY--MM-DD");
+		System.out.println("DueDate(YYYY--MM-DD):");
 		boolean isDate=false;
 		String dueDate ="";
 		while(!isDate) {
 			dueDate=taskContentParser.readTaskContent();
 			isDate=DataUtil.isDate(dueDate);
 		}
-		task.setDuedate(dueDate);
 		System.out.println("Project Name: ");
 		String projectName = taskContentParser.readTaskContent();
+		task.setId(tasksAdmin.getCurrentId()+1);
+		task.setTitle(taskTitle);
+		task.setDuedate(dueDate);
 		task.setProject(projectName);
 	}
 
@@ -63,25 +62,21 @@ public class AddTaskGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case SAVEANDRETURN:
-			dataProcessor.load();
-			dataProcessor.idIncrement();
-			task.setId(dataProcessor.getBiggestId());
-			dataProcessor.add(task);
-			returnToMain();
-			wantToQuit = true;
+			tasksAdmin.addTask(task);
+			wantToQuit = returnToMain();
 			break;
 		case QUITANDRETURN:
-			returnToMain();
-			wantToQuit = true;
+			wantToQuit = returnToMain();
 			break;
 		}
 		return wantToQuit;
 	}
 
-	private void returnToMain() {
+	private boolean returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
 		ToDolyMainEntry main = new ToDolyMainEntry();
 		main.start();
+		return true;
 	}
 
 }

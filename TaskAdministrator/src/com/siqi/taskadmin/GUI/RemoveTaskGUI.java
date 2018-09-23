@@ -6,18 +6,18 @@ import java.util.Iterator;
 import com.siqi.taskadmin.ToDolyMainEntry;
 import com.siqi.taskadmin.data.TaskDataProcessor;
 import com.siqi.taskadmin.model.Task;
-import com.siqi.taskadmin.parser.RemoveTaskParser;
+import com.siqi.taskadmin.parser.TaskIndexParser;
 import com.siqi.taskadmin.util.DataUtil;
 
 public class RemoveTaskGUI implements DialogGUI {
 	private TaskDataProcessor taskDataProccessor;
-	private RemoveTaskParser removeTaskParser;
+	private TaskIndexParser taskIndexParser;
 	private ArrayList<Task> tasks;
  	private int taskId;
 	
 	public RemoveTaskGUI(ArrayList<Task> tasks) {
 		taskDataProccessor=new TaskDataProcessor();
-		removeTaskParser = new RemoveTaskParser();
+		taskIndexParser = new TaskIndexParser();
 		this.tasks=tasks;
 		taskId=0;
 	}
@@ -35,8 +35,8 @@ public class RemoveTaskGUI implements DialogGUI {
 	
 	public boolean removeTask() {
 		boolean isSuccess = false;
-		if(getRemoveItem()) {
-			if(canRemove()) {
+		if(getOperateItem()) {
+			if(canOperate()) {
 				taskDataProccessor.load();
 				isSuccess=taskDataProccessor.remove(taskId);
 				return isSuccess;
@@ -45,23 +45,23 @@ public class RemoveTaskGUI implements DialogGUI {
 		return isSuccess;
 	}
 	
-	private boolean canRemove() {
-		boolean canRemove=false;
+	private boolean canOperate() {
+		boolean canOperate=false;
 		Iterator it=tasks.iterator();
 		while(it.hasNext()) {
 			Task task=(Task)it.next();
 			if(task.getId()==taskId) {
-				canRemove=true;
-				return canRemove;
+				canOperate=true;
+				return canOperate;
 			}	
 		}
 		System.out.println("Sorry, taskId does not exist!");
-		return canRemove;	
+		return canOperate;	
 	}
 	
-	private boolean getRemoveItem() {
+	private boolean getOperateItem() {
 		
-		String idStr=removeTaskParser.readTaskId();
+		String idStr=taskIndexParser.readTaskId();
 		if(!idStr.equals("")&&DataUtil.isInteger(idStr)) {
 			taskId = Integer.parseInt(idStr);
 			return true;

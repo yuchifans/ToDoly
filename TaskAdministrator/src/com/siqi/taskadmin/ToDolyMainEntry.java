@@ -11,7 +11,6 @@ import com.siqi.taskadmin.parser.CommandWord;
 
 public class ToDolyMainEntry implements DialogGUI {
 
-	final static int TOPLEVEL = 0;
 	private CommandParser commandParser;
 	private CommandMenu topMenu;
 	private TaskDataProcessor taskDataProcessor;
@@ -26,9 +25,7 @@ public class ToDolyMainEntry implements DialogGUI {
 	}
 
 	public void start() {
-
 		printWelcome();
-
 		boolean finished = false;
 		while (!finished) {
 			Command command = commandParser.getTopMenuCommand();
@@ -44,12 +41,10 @@ public class ToDolyMainEntry implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case SHOW:
-			show();
-			wantToQuit = true;
+			wantToQuit = show();
 			break;
 		case ADD:
-			add();
-			wantToQuit = true;
+			wantToQuit = add();
 			break;
 		case QUIT:
 			wantToQuit = quit(command);
@@ -72,16 +67,18 @@ public class ToDolyMainEntry implements DialogGUI {
 		return true; // signal that we want to quit
 	}
 
-	private void show() {
+	private boolean show() {
 		System.out.println("------------------------------------------------------------------------------");
 		TaskSortGUI taskSortGUI = new TaskSortGUI();
 		taskSortGUI.start();
+		return true;
 	}
 	
-	private void add() {
+	private boolean add() {
 		System.out.println("------------------------------------------------------------------------------");
 		AddTaskGUI addTaskGUI = new AddTaskGUI();
 		addTaskGUI.start();
+		return true;
 	}
 
 	public static void main(String[] args) {

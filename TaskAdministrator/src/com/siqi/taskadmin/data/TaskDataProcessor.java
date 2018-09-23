@@ -242,7 +242,7 @@ public class TaskDataProcessor {
 		biggestId += 1;
 	}
 
-	public int getBiggestId() {
+	public int getCurrentId() {
 		System.out.println(biggestId);
 		return biggestId;
 	}

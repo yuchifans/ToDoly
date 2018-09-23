@@ -17,7 +17,7 @@ public class ShowTaskByDateGUI implements DialogGUI {
 	private TaskDataProcessor dataProcessor;
 	private Tasks tasks;
 
-	ShowTaskByDateGUI() {
+	public ShowTaskByDateGUI() {
 		commandParser = new CommandParser();
 		childMenuOfByDate = new CommandMenu();
 		dataProcessor = new TaskDataProcessor();
@@ -50,39 +50,39 @@ public class ShowTaskByDateGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case EDIT:
-			edit();
-			wantToQuit = true;
+			wantToQuit = edit();
 			break;
 		case REMOVE:
-			remove();
-			wantToQuit = true;
+			wantToQuit = remove();
 			break;
 		case RETURNTOMAIN:
-			returnToMain();
-			wantToQuit = true;
+			wantToQuit = returnToMain();
 			break;
 		}
 		return wantToQuit;
 	}
 
-	private void returnToMain() {
+	private boolean returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
 		ToDolyMainEntry main = new ToDolyMainEntry();
 		main.start();
+		return true;
 	}
 
-	private void remove() {
+	private boolean remove() {
 		System.out.println("------------------------------------------------------------------------------");
 		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
 		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasksTmp);
 		removeTaskGUI.start();
+		return true;
 	}
 	
-	private void edit() {
+	private boolean edit() {
 		System.out.println("------------------------------------------------------------------------------");
 		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
 		EditTaskGUI editTaskGUI = new EditTaskGUI(tasksTmp);
 		editTaskGUI.start();
+		return true;
 	}
 
 }
