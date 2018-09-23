@@ -1,4 +1,9 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.GUI;
+
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.parser.Command;
+import com.siqi.taskadmin.parser.CommandParser;
+import com.siqi.taskadmin.parser.CommandWord;
 
 public class TaskSortGUI implements DialogGUI {
 	private CommandMenu childMenuOfShow;

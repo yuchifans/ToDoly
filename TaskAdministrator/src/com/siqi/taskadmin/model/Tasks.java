@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.model;
 
 import java.util.ArrayList;
 import java.util.List;

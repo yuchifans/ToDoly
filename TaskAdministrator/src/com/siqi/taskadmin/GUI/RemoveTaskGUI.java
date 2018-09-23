@@ -1,7 +1,13 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.GUI;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.siqi.taskadmin.ToDolyMainEntry;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.parser.RemoveTaskParser;
+import com.siqi.taskadmin.util.DataUtil;
 
 public class RemoveTaskGUI implements DialogGUI {
 	private TaskDataProcessor taskDataProccessor;

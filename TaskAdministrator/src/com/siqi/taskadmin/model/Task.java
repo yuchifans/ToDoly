@@ -1,4 +1,4 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.model;
 import java.util.Date;
 
 public class Task {
@@ -45,6 +45,9 @@ public class Task {
 		this.status = status;
 	}
 	public String getDetail() {
-		return "(TaskId: "+id+") Task title:"+title+" Duedate:"+dueDate+" Project name:"+projectName+" Status:"+(status==true?"Completed" :"In progress" );
+		return "*****************************************\r "
+				+ "TaskId: "+id+"\r Task title:"+title+"\r Duedate:"+dueDate+"\r Project name:"
+				+projectName+"\r Status:"+(status==true?"Completed" :"In progress \r"
+				+ "*****************************************" );
 	}
 }

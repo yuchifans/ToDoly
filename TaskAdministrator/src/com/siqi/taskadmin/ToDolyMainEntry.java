@@ -1,5 +1,14 @@
 package com.siqi.taskadmin;
 
+import com.siqi.taskadmin.GUI.AddTaskGUI;
+import com.siqi.taskadmin.GUI.DialogGUI;
+import com.siqi.taskadmin.GUI.TaskSortGUI;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.parser.Command;
+import com.siqi.taskadmin.parser.CommandParser;
+import com.siqi.taskadmin.parser.CommandWord;
+
 public class ToDolyMainEntry implements DialogGUI {
 
 	final static int TOPLEVEL = 0;
@@ -9,7 +18,7 @@ public class ToDolyMainEntry implements DialogGUI {
 	private int[] tasksNumberBystatus;
 	
 
-	ToDolyMainEntry() {
+	public ToDolyMainEntry() {
 		commandParser = new CommandParser();
 		topMenu = new CommandMenu();
 		taskDataProcessor=new TaskDataProcessor();

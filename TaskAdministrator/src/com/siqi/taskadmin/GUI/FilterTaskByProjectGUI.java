@@ -1,36 +1,50 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.GUI;
 
 import java.util.ArrayList;
 
-public class ShowTaskByDateGUI implements DialogGUI {
-	private CommandMenu childMenuOfByDate;
-	private CommandParser commandParser;
+import com.siqi.taskadmin.ToDolyMainEntry;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.model.Tasks;
+import com.siqi.taskadmin.parser.Command;
+import com.siqi.taskadmin.parser.CommandParser;
+import com.siqi.taskadmin.parser.CommandWord;
+import com.siqi.taskadmin.parser.ProjectNameParser;
+
+public class FilterTaskByProjectGUI implements DialogGUI {
 	private TaskDataProcessor dataProcessor;
+	private ProjectNameParser projectNameParser;
+	private CommandMenu childMenuOfFilterProject;
+	private CommandParser commandParser;
 	private Tasks tasks;
 
-	ShowTaskByDateGUI() {
-		commandParser = new CommandParser();
-		childMenuOfByDate = new CommandMenu();
+	public FilterTaskByProjectGUI() {
 		dataProcessor = new TaskDataProcessor();
+		projectNameParser = new ProjectNameParser();
+		childMenuOfFilterProject = new CommandMenu();
+		commandParser = new CommandParser();
 		tasks = new Tasks();
 	}
 
 	public void start() {
+		System.out.println("Please input project name: ");
+		String projectName = projectNameParser.readProjectName();
 		dataProcessor.load();
-		tasks = dataProcessor.sortByDate();
+		tasks = dataProcessor.filterByProject(projectName);
+		boolean finished = false;
 		if (tasks != null && tasks.getNumberOfTask() != 0) {
 			tasks.showAllTheTask();
-			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
-			boolean finished = false;
+			childMenuOfFilterProject.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
-				Command command = commandParser.getChildMenuCommand(CommandWord.BYDATE);
+				Command command = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
 				finished = processCommand(command);
 			}
 		} else {
 			System.out.println("There is no task currently!");
 			returnToMain();
 		}
-		
+
 	}
 
 	public boolean processCommand(Command command) {

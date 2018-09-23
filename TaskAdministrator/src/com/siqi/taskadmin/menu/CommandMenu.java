@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.menu;
 
 import java.util.HashMap;
+
+import com.siqi.taskadmin.parser.CommandWord;
 
 /**
  * This class is part of the "ToDoly" application. "ToDoly" is a small
@@ -19,7 +21,7 @@ public class CommandMenu {
 
 	private HashMap<Integer, CommandWord> commandMenu;
 
-	CommandMenu() {
+	public CommandMenu() {
 		commandMenu = new HashMap<>();
 		
 		commandMenu.put(1, CommandWord.SHOW);

@@ -1,7 +1,12 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.parser;
+
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.util.DataUtil;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import com.siqi.taskadmin.menu.CommandMenu;
 
 /**
  * This class is part of the "ToDoly" application.

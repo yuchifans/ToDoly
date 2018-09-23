@@ -1,4 +1,4 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.parser;
 
 public class Command {
 	private CommandWord commandWord;

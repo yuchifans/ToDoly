@@ -1,40 +1,45 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.GUI;
 
 import java.util.ArrayList;
 
-public class FilterTaskByProjectGUI implements DialogGUI {
-	private TaskDataProcessor dataProcessor;
-	private ProjectNameParser projectNameParser;
-	private CommandMenu childMenuOfFilterProject;
+import com.siqi.taskadmin.ToDolyMainEntry;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.model.Tasks;
+import com.siqi.taskadmin.parser.Command;
+import com.siqi.taskadmin.parser.CommandParser;
+import com.siqi.taskadmin.parser.CommandWord;
+
+public class ShowTaskByDateGUI implements DialogGUI {
+	private CommandMenu childMenuOfByDate;
 	private CommandParser commandParser;
+	private TaskDataProcessor dataProcessor;
 	private Tasks tasks;
 
-	public FilterTaskByProjectGUI() {
-		dataProcessor = new TaskDataProcessor();
-		projectNameParser = new ProjectNameParser();
-		childMenuOfFilterProject = new CommandMenu();
+	ShowTaskByDateGUI() {
 		commandParser = new CommandParser();
+		childMenuOfByDate = new CommandMenu();
+		dataProcessor = new TaskDataProcessor();
 		tasks = new Tasks();
 	}
 
 	public void start() {
-		System.out.println("Please input project name: ");
-		String projectName = projectNameParser.readProjectName();
 		dataProcessor.load();
-		tasks = dataProcessor.filterByProject(projectName);
-		boolean finished = false;
+		tasks = dataProcessor.sortByDate();
 		if (tasks != null && tasks.getNumberOfTask() != 0) {
 			tasks.showAllTheTask();
-			childMenuOfFilterProject.printChildMenu(CommandWord.BYPROJECT);
+			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
+			boolean finished = false;
 			while (!finished) {
-				Command command = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
+				Command command = commandParser.getChildMenuCommand(CommandWord.BYDATE);
 				finished = processCommand(command);
 			}
 		} else {
 			System.out.println("There is no task currently!");
 			returnToMain();
 		}
-
+		
 	}
 
 	public boolean processCommand(Command command) {
@@ -45,6 +50,7 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case EDIT:
+			edit();
 			wantToQuit = true;
 			break;
 		case REMOVE:
@@ -70,6 +76,13 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
 		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasksTmp);
 		removeTaskGUI.start();
+	}
+	
+	private void edit() {
+		System.out.println("------------------------------------------------------------------------------");
+		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
+		EditTaskGUI editTaskGUI = new EditTaskGUI(tasksTmp);
+		editTaskGUI.start();
 	}
 
 }

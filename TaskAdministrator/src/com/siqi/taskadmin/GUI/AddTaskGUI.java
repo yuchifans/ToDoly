@@ -1,4 +1,15 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.GUI;
+
+
+import com.siqi.taskadmin.ToDolyMainEntry;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.parser.Command;
+import com.siqi.taskadmin.parser.CommandParser;
+import com.siqi.taskadmin.parser.CommandWord;
+import com.siqi.taskadmin.parser.TaskContentParser;
+import com.siqi.taskadmin.util.DataUtil;
 
 public class AddTaskGUI implements DialogGUI {
 	private CommandMenu childMenuOfShow;
@@ -31,8 +42,13 @@ public class AddTaskGUI implements DialogGUI {
 		System.out.println("TaskTitle: ");
 		String taskTitle = taskContentParser.readTaskContent();
 		task.setTitle(taskTitle);
-		System.out.println("DueDate: ");
-		String dueDate = taskContentParser.readTaskContent();
+		System.out.println("DueDate: YYYY--MM-DD");
+		boolean isDate=false;
+		String dueDate ="";
+		while(!isDate) {
+			dueDate=taskContentParser.readTaskContent();
+			isDate=DataUtil.isDate(dueDate);
+		}
 		task.setDuedate(dueDate);
 		System.out.println("Project Name: ");
 		String projectName = taskContentParser.readTaskContent();

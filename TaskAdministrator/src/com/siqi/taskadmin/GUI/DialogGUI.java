@@ -1,4 +1,4 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.GUI;
 
 public interface DialogGUI {
 	public void start() ;

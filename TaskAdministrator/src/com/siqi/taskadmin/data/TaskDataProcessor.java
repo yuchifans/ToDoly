@@ -1,4 +1,4 @@
-package com.siqi.taskadmin;
+package com.siqi.taskadmin.data;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.model.Tasks;
 
 public class TaskDataProcessor {
 	private int biggestId;
