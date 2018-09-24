@@ -8,19 +8,32 @@ import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.parser.Command;
 import com.siqi.taskadmin.parser.CommandParser;
 import com.siqi.taskadmin.parser.CommandWord;
+import com.siqi.taskadmin.controller.TasksAdmin;
+import com.siqi.taskadmin.model.Tasks;
 
 public class ToDolyMainEntry implements DialogGUI {
 
 	private CommandParser commandParser;
 	private CommandMenu topMenu;
-	private TaskDataProcessor taskDataProcessor;
+	private TasksAdmin tasksAdmin;
+	private Tasks tasks;
 	private int[] tasksNumberBystatus;
 	
 
 	public ToDolyMainEntry() {
 		commandParser = new CommandParser();
 		topMenu = new CommandMenu();
-		taskDataProcessor=new TaskDataProcessor();
+		tasksAdmin = new TasksAdmin();
+		tasks = new Tasks();
+		tasks= tasksAdmin.loadAllTasks();
+		tasksNumberBystatus=new int[2];
+	}
+	
+	public ToDolyMainEntry(Tasks tasks) {
+		commandParser = new CommandParser();
+		topMenu = new CommandMenu();
+		tasksAdmin = new TasksAdmin();
+		this.tasks = tasks;
 		tasksNumberBystatus=new int[2];
 	}
 
@@ -53,9 +66,8 @@ public class ToDolyMainEntry implements DialogGUI {
 		return wantToQuit;
 	}
 
-	private void printWelcome() {
-		taskDataProcessor.load();
-		tasksNumberBystatus=taskDataProcessor.getNumberOfTasksByStatus();
+	private void printWelcome() {	
+		tasksNumberBystatus=tasks.getNumberOfTasksByStatus();
 		System.out.println();
 		System.out.println("Welcome to ToDoly!");
 		System.out.println("You have "+tasksNumberBystatus[0]+" tasks todo and "+tasksNumberBystatus[1]+" tasks done.");
@@ -63,20 +75,25 @@ public class ToDolyMainEntry implements DialogGUI {
 	}
 
 	private boolean quit(Command command) {
+		save();
 		System.out.println("Thank you for using ToDoly.  Good bye.");
-		return true; // signal that we want to quit
+		return true; 
+	}
+	
+	private void save() {
+		tasksAdmin.saveAllTasks(tasks);
 	}
 
 	private boolean show() {
 		System.out.println("------------------------------------------------------------------------------");
-		TaskSortGUI taskSortGUI = new TaskSortGUI();
+		TaskSortGUI taskSortGUI = new TaskSortGUI(tasks);
 		taskSortGUI.start();
 		return true;
 	}
 	
 	private boolean add() {
 		System.out.println("------------------------------------------------------------------------------");
-		AddTaskGUI addTaskGUI = new AddTaskGUI();
+		AddTaskGUI addTaskGUI = new AddTaskGUI(tasks);
 		addTaskGUI.start();
 		return true;
 	}

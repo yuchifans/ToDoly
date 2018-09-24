@@ -14,23 +14,25 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 	private CommandMenu childMenuOfFilterProject;
 	private CommandParser commandParser;
 	private Tasks tasks;
+	private Tasks tasksFiltered;
 	private TasksAdmin tasksAdmin;
 
-	public FilterTaskByProjectGUI() {
+	public FilterTaskByProjectGUI(Tasks tasks) {
 		projectNameParser = new ProjectNameParser();
 		childMenuOfFilterProject = new CommandMenu();
 		commandParser = new CommandParser();
-		tasks = new Tasks();
+		this.tasks = tasks;
+		tasksFiltered = new Tasks();
 		tasksAdmin = new TasksAdmin();
 	}
 
 	public void start() {
 		System.out.println("Please input project name: ");
 		String projectName = projectNameParser.readProjectName();
-		tasks=tasksAdmin.getTasksFilterByProject(projectName);
+		tasksFiltered=tasksAdmin.getTasksFilterByProject(projectName,tasks);
 		boolean finished = false;
-		if (tasks != null && tasks.getNumberOfTask() != 0) {
-			tasks.showAllTheTask();
+		if (tasksFiltered != null && tasksFiltered.getNumberOfTask() != 0) {
+			tasksFiltered.showAllTheTask();
 			childMenuOfFilterProject.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
 				Command command = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
@@ -72,7 +74,7 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 
 	private boolean remove() {
 		System.out.println("------------------------------------------------------------------------------");
-		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasks);
+		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasks,tasksFiltered);
 		removeTaskGUI.start();
 		return true;
 	}

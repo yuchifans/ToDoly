@@ -4,21 +4,20 @@ import java.util.Iterator;
 import com.siqi.taskadmin.ToDolyMainEntry;
 import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.Tasks;
-import com.siqi.taskadmin.controller.TasksAdmin;
 import com.siqi.taskadmin.parser.TaskIndexParser;
 import com.siqi.taskadmin.util.DataUtil;
 
 public class RemoveTaskGUI implements DialogGUI {
 	private TaskIndexParser taskIndexParser;
 	private Tasks tasks;
+	private Tasks currentTasks;
 	private int taskId;
-	private TasksAdmin tasksAdmin;
 
-	public RemoveTaskGUI(Tasks tasks) {
+	public RemoveTaskGUI(Tasks tasks, Tasks currentTasks) {
 		taskIndexParser = new TaskIndexParser();
 		this.tasks = tasks;
+		this.currentTasks = currentTasks;
 		taskId = 0;
-		tasksAdmin = new TasksAdmin();
 	}
 
 	public void start() {
@@ -34,8 +33,8 @@ public class RemoveTaskGUI implements DialogGUI {
 		boolean isSuccess = false;
 		if (getOperateItem()) {
 			if (canOperate()) {
-				isSuccess = tasksAdmin.removeTask(taskId);
-				return isSuccess;
+				tasks.removeById(taskId);
+				isSuccess = true;
 			}
 		}
 		return isSuccess;
@@ -43,7 +42,7 @@ public class RemoveTaskGUI implements DialogGUI {
 
 	private boolean canOperate() {
 		boolean canOperate = false;
-		Iterator<Task> it = tasks.getTasks().iterator();
+		Iterator<Task> it = currentTasks.getTasks().iterator();
 		while (it.hasNext()) {
 			Task task = (Task) it.next();
 			if (task.getId() == taskId) {
@@ -68,7 +67,7 @@ public class RemoveTaskGUI implements DialogGUI {
 
 	private void returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
-		ToDolyMainEntry main = new ToDolyMainEntry();
+		ToDolyMainEntry main = new ToDolyMainEntry(tasks);
 		main.start();
 	}
 

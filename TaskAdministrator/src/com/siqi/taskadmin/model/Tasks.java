@@ -11,10 +11,19 @@ import java.util.List;
  *
  */
 public class Tasks {
+	private static int biggestId;
 	private List<Task> tasksList;
 
 	public Tasks() {
 		tasksList=new ArrayList<>();
+	}
+	
+	public static void  setBiggestId(int id) {
+		biggestId=id;
+	}
+	
+	public static int getBiggestId() {
+		return biggestId;
 	}
 
 	public List<Task> getTasks() {
@@ -39,10 +48,10 @@ public class Tasks {
 	}
 	
 	public void removeById(int taskId) {
-		
 		for(Task task:tasksList) {
 			if(task.getId()==taskId) {
 				tasksList.remove(task);
+				break;
 			}
 		}
 	}
@@ -58,7 +67,7 @@ public class Tasks {
 		}	
 	}
 	
-	public int[] getNumberOfTaskByStatus() {
+	public int[] getNumberOfTasksByStatus() {
 		int[] taskNumber=new int[2];
 		for(Task task: tasksList) {
 			if(task.isStatus()==false) {

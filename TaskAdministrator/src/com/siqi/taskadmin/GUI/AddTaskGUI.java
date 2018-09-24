@@ -1,10 +1,9 @@
 package com.siqi.taskadmin.GUI;
 
-
 import com.siqi.taskadmin.ToDolyMainEntry;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.model.Task;
-import com.siqi.taskadmin.controller.TasksAdmin;
+import com.siqi.taskadmin.model.Tasks;
 import com.siqi.taskadmin.parser.Command;
 import com.siqi.taskadmin.parser.CommandParser;
 import com.siqi.taskadmin.parser.CommandWord;
@@ -16,14 +15,14 @@ public class AddTaskGUI implements DialogGUI {
 	private CommandParser commandParser;
 	private TaskContentParser taskContentParser;
 	private Task task;
-	private TasksAdmin tasksAdmin;
+	private Tasks tasks;
 
-	public AddTaskGUI() {
+	public AddTaskGUI(Tasks tasks) {
 		commandParser = new CommandParser();
 		childMenuOfShow = new CommandMenu();
 		taskContentParser = new TaskContentParser();
 		task = new Task();
-		tasksAdmin= new TasksAdmin();
+		this.tasks= tasks;
 	}
 
 	public void start() {
@@ -44,7 +43,7 @@ public class AddTaskGUI implements DialogGUI {
 		while(isEmpty) {
 			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
 			taskTitle = taskContentParser.readTaskContent();
-			if(taskTitle==null||taskTitle.equals("")) {
+			if(taskTitle!=null&&!taskTitle.equals("")) {
 				isEmpty=false;
 			}
 		}
@@ -55,7 +54,7 @@ public class AddTaskGUI implements DialogGUI {
 		}
 		System.out.println("Project Name: ");
 		String projectName = taskContentParser.readTaskContent();
-		task.setId(tasksAdmin.getCurrentId()+1);
+		task.setId(Tasks.getBiggestId()+1);
 		task.setTitle(taskTitle);
 		task.setDuedate(dueDate);
 		task.setProject(projectName);
@@ -69,7 +68,9 @@ public class AddTaskGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case SAVEANDRETURN:
-			tasksAdmin.addTask(task);
+			tasks.add(task);
+			Tasks.setBiggestId(Tasks.getBiggestId()+1);
+			System.out.println("The task has been added.");
 			wantToQuit = returnToMain();
 			break;
 		case QUITANDRETURN:
@@ -81,7 +82,7 @@ public class AddTaskGUI implements DialogGUI {
 
 	private boolean returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
-		ToDolyMainEntry main = new ToDolyMainEntry();
+		ToDolyMainEntry main = new ToDolyMainEntry(tasks);
 		main.start();
 		return true;
 	}

@@ -14,17 +14,17 @@ public class ShowTaskByDateGUI implements DialogGUI {
 	private Tasks tasks;
 	private TasksAdmin tasksAdmin;
 
-	public ShowTaskByDateGUI() {
+	public ShowTaskByDateGUI(Tasks tasks) {
 		commandParser = new CommandParser();
 		childMenuOfByDate = new CommandMenu();
-		tasks = new Tasks();
+		this.tasks = tasks;
 		tasksAdmin = new TasksAdmin();
 	}
 
 	public void start() {
-		tasks=tasksAdmin.getTasksSortByDate();
-		if (tasks != null && tasks.getNumberOfTask() != 0) {
-			tasks.showAllTheTask();
+		Tasks tasksByDate=tasksAdmin.getTasksSortByDate(tasks);
+		if (tasksByDate != null && tasksByDate.getNumberOfTask() != 0) {
+			tasksByDate.showAllTheTask();
 			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
 			boolean finished = false;
 			while (!finished) {
@@ -67,7 +67,7 @@ public class ShowTaskByDateGUI implements DialogGUI {
 
 	private boolean remove() {
 		System.out.println("------------------------------------------------------------------------------");
-		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasks);
+		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasks,tasks);
 		removeTaskGUI.start();
 		return true;
 	}

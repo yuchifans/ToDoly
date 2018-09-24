@@ -57,7 +57,7 @@ public class EditTaskGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case SAVEANDRETURN:
-			tasksAdmin.updateTask(task);
+			tasks=tasksAdmin.updateTask(tasks,task);
 			wantToQuit = returnToMain();
 			break;
 		case QUITANDRETURN:
@@ -106,7 +106,6 @@ public class EditTaskGUI implements DialogGUI {
 	}
 
 	private void getTaskItem() {
-
 		boolean isDate = false;
 		boolean isStatus = false;
 		String dueDate = "";
@@ -142,7 +141,7 @@ public class EditTaskGUI implements DialogGUI {
 
 	private boolean returnToMain() {
 		System.out.println("------------------------------------------------------------------------------");
-		ToDolyMainEntry main = new ToDolyMainEntry();
+		ToDolyMainEntry main = new ToDolyMainEntry(tasks);
 		main.start();
 		return true;
 	}

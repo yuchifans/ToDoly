@@ -46,7 +46,7 @@ public class Task {
 	public String getDetail() {
 		return "*****************************************\r "
 				+ "TaskId: "+id+"\r Task title:"+title+"\r Duedate:"+dueDate+"\r Project name:"
-				+projectName+"\r Status:"+(status==true?"Completed" :"In progress \r"
-				+ "*****************************************" );
+				+projectName+"\r Status:"+(status==true?"Completed \r" :"In progress \r")
+				+ "*****************************************" ;
 	}
 }
