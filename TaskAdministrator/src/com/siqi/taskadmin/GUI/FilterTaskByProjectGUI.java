@@ -1,10 +1,7 @@
 package com.siqi.taskadmin.GUI;
 
-import java.util.ArrayList;
-
 import com.siqi.taskadmin.ToDolyMainEntry;
 import com.siqi.taskadmin.menu.CommandMenu;
-import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.Tasks;
 import com.siqi.taskadmin.controller.TasksAdmin;
 import com.siqi.taskadmin.parser.Command;
@@ -75,16 +72,14 @@ public class FilterTaskByProjectGUI implements DialogGUI {
 
 	private boolean remove() {
 		System.out.println("------------------------------------------------------------------------------");
-		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
-		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasksTmp);
+		RemoveTaskGUI removeTaskGUI = new RemoveTaskGUI(tasks);
 		removeTaskGUI.start();
 		return true;
 	}
 	
 	private boolean edit() {
 		System.out.println("------------------------------------------------------------------------------");
-		ArrayList<Task> tasksTmp = (ArrayList<Task>) tasks.getTasks();
-		EditTaskGUI editTaskGUI = new EditTaskGUI(tasksTmp);
+		EditTaskGUI editTaskGUI = new EditTaskGUI(tasks);
 		editTaskGUI.start();
 		return true;
 	}

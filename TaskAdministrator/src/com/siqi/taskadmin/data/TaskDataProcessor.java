@@ -200,7 +200,6 @@ public class TaskDataProcessor {
 
 	public void add(Task task) {
 		try {
-
 			JSONObject member = new JSONObject();
 			member.put("taskId", task.getId());
 			member.put("title", task.getTitle());
@@ -217,6 +216,12 @@ public class TaskDataProcessor {
 		String jsonStr = json.toString();
 		write(jsonStr);
 
+	}
+	
+	public void update(Task task) {
+		if(remove(task.getId())) {
+			add(task);
+		}
 	}
 
 	private void write(String jsonStr) {

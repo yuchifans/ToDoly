@@ -29,6 +29,15 @@ public class Tasks {
 		tasksList.add(task);
 	}
 	
+	public Task getById(int taskId) {
+		for(Task task:tasksList) {
+			if(task.getId()==taskId) {
+				return task;
+			}
+		}
+		return null;
+	}
+	
 	public void removeById(int taskId) {
 		
 		for(Task task:tasksList) {

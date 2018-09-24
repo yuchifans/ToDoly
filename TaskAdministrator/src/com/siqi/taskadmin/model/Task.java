@@ -1,5 +1,4 @@
 package com.siqi.taskadmin.model;
-import java.util.Date;
 
 public class Task {
 	private int id;

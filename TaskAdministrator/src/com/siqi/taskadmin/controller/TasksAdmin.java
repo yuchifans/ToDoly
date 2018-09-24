@@ -34,4 +34,15 @@ public class TasksAdmin {
 		Tasks tasks = taskDataProcessor.filterByProject(projectName);
 		return tasks;
 	}
+	
+	public boolean removeTask(int taskId) {
+		taskDataProcessor.load();
+		return taskDataProcessor.remove(taskId);
+	}
+	
+	public void updateTask(Task task) {
+		taskDataProcessor.load();
+		taskDataProcessor.update(task);
+	}
+	
 }

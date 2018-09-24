@@ -37,12 +37,19 @@ public class AddTaskGUI implements DialogGUI {
 	}
 
 	private void getTaskItem() {
-		System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
-		String taskTitle = taskContentParser.readTaskContent();
-		System.out.println("DueDate(YYYY--MM-DD):");
 		boolean isDate=false;
+		boolean isEmpty=true;
+		String taskTitle="";
 		String dueDate ="";
+		while(isEmpty) {
+			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
+			taskTitle = taskContentParser.readTaskContent();
+			if(taskTitle==null||taskTitle.equals("")) {
+				isEmpty=false;
+			}
+		}
 		while(!isDate) {
+			System.out.println("DueDate(YYYY--MM-DD):");
 			dueDate=taskContentParser.readTaskContent();
 			isDate=DataUtil.isDate(dueDate);
 		}

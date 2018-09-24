@@ -32,7 +32,11 @@ public class DataUtil {
 			return true;
 		}else {
 			return false;
-		}
-		
+		}	
+	}
+	
+	public static boolean isStatus(String str) {
+		Pattern pattern = Pattern.compile("^[0-1]{1}$");
+		return pattern.matcher(str).matches();
 	}
 }

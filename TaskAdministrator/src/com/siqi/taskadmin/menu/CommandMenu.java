@@ -31,6 +31,9 @@ public class CommandMenu {
 		CommandWord.BYDATE.getChildCommandWords().clear();
 		CommandWord.BYDATE.addChildCommand(CommandWord.REMOVE);
 		CommandWord.BYDATE.addChildCommand(CommandWord.EDIT);
+		CommandWord.EDIT.getChildCommandWords().clear();
+		CommandWord.EDIT.addChildCommand(CommandWord.SAVEANDRETURN);
+		CommandWord.EDIT.addChildCommand(CommandWord.QUITANDRETURN);
 		CommandWord.BYDATE.addChildCommand(CommandWord.RETURNTOMAIN);
 		CommandWord.BYPROJECT.getChildCommandWords().clear();
 		CommandWord.BYPROJECT.addChildCommand(CommandWord.REMOVE);
