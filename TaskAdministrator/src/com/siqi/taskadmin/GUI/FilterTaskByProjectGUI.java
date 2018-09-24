@@ -3,35 +3,34 @@ package com.siqi.taskadmin.GUI;
 import java.util.ArrayList;
 
 import com.siqi.taskadmin.ToDolyMainEntry;
-import com.siqi.taskadmin.data.TaskDataProcessor;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.Tasks;
+import com.siqi.taskadmin.controller.TasksAdmin;
 import com.siqi.taskadmin.parser.Command;
 import com.siqi.taskadmin.parser.CommandParser;
 import com.siqi.taskadmin.parser.CommandWord;
 import com.siqi.taskadmin.parser.ProjectNameParser;
 
 public class FilterTaskByProjectGUI implements DialogGUI {
-	private TaskDataProcessor dataProcessor;
 	private ProjectNameParser projectNameParser;
 	private CommandMenu childMenuOfFilterProject;
 	private CommandParser commandParser;
 	private Tasks tasks;
+	private TasksAdmin tasksAdmin;
 
 	public FilterTaskByProjectGUI() {
-		dataProcessor = new TaskDataProcessor();
 		projectNameParser = new ProjectNameParser();
 		childMenuOfFilterProject = new CommandMenu();
 		commandParser = new CommandParser();
 		tasks = new Tasks();
+		tasksAdmin = new TasksAdmin();
 	}
 
 	public void start() {
 		System.out.println("Please input project name: ");
 		String projectName = projectNameParser.readProjectName();
-		dataProcessor.load();
-		tasks = dataProcessor.filterByProject(projectName);
+		tasks=tasksAdmin.getTasksFilterByProject(projectName);
 		boolean finished = false;
 		if (tasks != null && tasks.getNumberOfTask() != 0) {
 			tasks.showAllTheTask();

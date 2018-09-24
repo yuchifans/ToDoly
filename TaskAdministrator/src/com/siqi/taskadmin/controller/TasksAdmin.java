@@ -5,13 +5,9 @@ import com.siqi.taskadmin.model.Tasks;
 import com.siqi.taskadmin.data.TaskDataProcessor;;
 
 public class TasksAdmin {
-	private Task task;
-	private Tasks tasks;
 	private TaskDataProcessor taskDataProcessor;
 	
 	public TasksAdmin() {
-		task= new Task();
-		tasks = new Tasks();
 		taskDataProcessor = new TaskDataProcessor();
 	}
 	
@@ -25,5 +21,17 @@ public class TasksAdmin {
 		taskDataProcessor.load();
 		int currentId=taskDataProcessor.getCurrentId();
 		return currentId;
+	}
+	
+	public Tasks getTasksSortByDate() {
+		taskDataProcessor.load();
+		Tasks tasks = taskDataProcessor.sortByDate();
+		return tasks;
+	}
+	
+	public Tasks getTasksFilterByProject(String projectName) {
+		taskDataProcessor.load();
+		Tasks tasks = taskDataProcessor.filterByProject(projectName);
+		return tasks;
 	}
 }

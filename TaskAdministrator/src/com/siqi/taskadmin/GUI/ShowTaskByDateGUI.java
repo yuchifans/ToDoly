@@ -3,10 +3,10 @@ package com.siqi.taskadmin.GUI;
 import java.util.ArrayList;
 
 import com.siqi.taskadmin.ToDolyMainEntry;
-import com.siqi.taskadmin.data.TaskDataProcessor;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.Tasks;
+import com.siqi.taskadmin.controller.TasksAdmin;
 import com.siqi.taskadmin.parser.Command;
 import com.siqi.taskadmin.parser.CommandParser;
 import com.siqi.taskadmin.parser.CommandWord;
@@ -14,19 +14,18 @@ import com.siqi.taskadmin.parser.CommandWord;
 public class ShowTaskByDateGUI implements DialogGUI {
 	private CommandMenu childMenuOfByDate;
 	private CommandParser commandParser;
-	private TaskDataProcessor dataProcessor;
 	private Tasks tasks;
+	private TasksAdmin tasksAdmin;
 
 	public ShowTaskByDateGUI() {
 		commandParser = new CommandParser();
 		childMenuOfByDate = new CommandMenu();
-		dataProcessor = new TaskDataProcessor();
 		tasks = new Tasks();
+		tasksAdmin = new TasksAdmin();
 	}
 
 	public void start() {
-		dataProcessor.load();
-		tasks = dataProcessor.sortByDate();
+		tasks=tasksAdmin.getTasksSortByDate();
 		if (tasks != null && tasks.getNumberOfTask() != 0) {
 			tasks.showAllTheTask();
 			childMenuOfByDate.printChildMenu(CommandWord.BYDATE);
