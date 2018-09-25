@@ -21,6 +21,7 @@ public class EditTaskGUI implements DialogGUI {
 	private CommandParser commandParser;
 	private TasksAdmin tasksAdmin;
 	private Tasks tasks;
+	private Tasks originalTasks;
 	private Task task;
 	private int taskId;
 
@@ -32,6 +33,8 @@ public class EditTaskGUI implements DialogGUI {
 		tasksAdmin = new TasksAdmin();
 		task = new Task();
 		this.tasks = tasks;
+		originalTasks = new Tasks();
+		originalTasks.setTasks(tasks.getTasks());
 		taskId = 0;
 	}
 
@@ -57,11 +60,11 @@ public class EditTaskGUI implements DialogGUI {
 			System.out.println("Please type in a proper number...");
 			break;
 		case SAVEANDRETURN:
-			tasks=tasksAdmin.updateTask(tasks,task);
-			wantToQuit = returnToMain();
+			tasks = tasksAdmin.updateTask(tasks, task);
+			wantToQuit = returnToMain(true);
 			break;
 		case QUITANDRETURN:
-			wantToQuit = returnToMain();
+			wantToQuit = returnToMain(false);
 			break;
 		}
 		return wantToQuit;
@@ -139,10 +142,15 @@ public class EditTaskGUI implements DialogGUI {
 		}
 	}
 
-	private boolean returnToMain() {
+	private boolean returnToMain(boolean wannaSave) {
 		System.out.println("------------------------------------------------------------------------------");
-		ToDolyMainEntry main = new ToDolyMainEntry(tasks);
-		main.start();
+		if (wannaSave) {
+			ToDolyMainEntry main = new ToDolyMainEntry(tasks);
+			main.start();
+		}else {
+			ToDolyMainEntry main = new ToDolyMainEntry(originalTasks);
+			main.start();
+		}
 		return true;
 	}
 

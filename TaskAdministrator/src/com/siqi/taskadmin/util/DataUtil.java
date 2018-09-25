@@ -17,8 +17,6 @@ public class DataUtil {
 		return pattern.matcher(str).matches();
 	}
 
-
-	
 	public static boolean isDate(String str) {
 		if(isDateType(str)) {
 			String[] date=str.split("-");

@@ -26,8 +26,8 @@ public class Tasks {
 		return biggestId;
 	}
 
-	public List<Task> getTasks() {
-		return tasksList;
+	public ArrayList<Task> getTasks() {
+		return (ArrayList<Task>)tasksList;
 	}
 
 	public void setTasks(ArrayList<Task> tasksList) {

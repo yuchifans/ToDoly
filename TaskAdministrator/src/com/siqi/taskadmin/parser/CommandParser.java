@@ -50,10 +50,4 @@ public class CommandParser {
 		return new Command(CommandWord.UNKNOWN);
 	}
 
-	
-	
-
-	public void showCommands() {
-
-	}
 }

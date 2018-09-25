@@ -16,13 +16,16 @@ public class AddTaskGUI implements DialogGUI {
 	private TaskContentParser taskContentParser;
 	private Task task;
 	private Tasks tasks;
+	private Tasks originalTasks;
 
 	public AddTaskGUI(Tasks tasks) {
 		commandParser = new CommandParser();
 		childMenuOfShow = new CommandMenu();
 		taskContentParser = new TaskContentParser();
 		task = new Task();
-		this.tasks= tasks;
+		this.tasks = tasks;
+		this.originalTasks = new Tasks();
+		originalTasks.setTasks(tasks.getTasks());
 	}
 
 	public void start() {
@@ -36,25 +39,25 @@ public class AddTaskGUI implements DialogGUI {
 	}
 
 	private void getTaskItem() {
-		boolean isDate=false;
-		boolean isEmpty=true;
-		String taskTitle="";
-		String dueDate ="";
-		while(isEmpty) {
+		boolean isDate = false;
+		boolean isEmpty = true;
+		String taskTitle = "";
+		String dueDate = "";
+		while (isEmpty) {
 			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
 			taskTitle = taskContentParser.readTaskContent();
-			if(taskTitle!=null&&!taskTitle.equals("")) {
-				isEmpty=false;
+			if (taskTitle != null && !taskTitle.equals("")) {
+				isEmpty = false;
 			}
 		}
-		while(!isDate) {
+		while (!isDate) {
 			System.out.println("DueDate(YYYY--MM-DD):");
-			dueDate=taskContentParser.readTaskContent();
-			isDate=DataUtil.isDate(dueDate);
+			dueDate = taskContentParser.readTaskContent();
+			isDate = DataUtil.isDate(dueDate);
 		}
 		System.out.println("Project Name: ");
 		String projectName = taskContentParser.readTaskContent();
-		task.setId(Tasks.getBiggestId()+1);
+		task.setId(Tasks.getBiggestId() + 1);
 		task.setTitle(taskTitle);
 		task.setDuedate(dueDate);
 		task.setProject(projectName);
@@ -69,21 +72,26 @@ public class AddTaskGUI implements DialogGUI {
 			break;
 		case SAVEANDRETURN:
 			tasks.add(task);
-			Tasks.setBiggestId(Tasks.getBiggestId()+1);
+			Tasks.setBiggestId(Tasks.getBiggestId() + 1);
 			System.out.println("The task has been added.");
-			wantToQuit = returnToMain();
+			wantToQuit = returnToMain(true);
 			break;
 		case QUITANDRETURN:
-			wantToQuit = returnToMain();
+			wantToQuit = returnToMain(false);
 			break;
 		}
 		return wantToQuit;
 	}
 
-	private boolean returnToMain() {
+	private boolean returnToMain(boolean wannaSave) {
 		System.out.println("------------------------------------------------------------------------------");
-		ToDolyMainEntry main = new ToDolyMainEntry(tasks);
-		main.start();
+		if (wannaSave) {
+			ToDolyMainEntry main = new ToDolyMainEntry(tasks);
+			main.start();
+		} else {
+			ToDolyMainEntry main = new ToDolyMainEntry(originalTasks);
+			main.start();
+		}
 		return true;
 	}
 
