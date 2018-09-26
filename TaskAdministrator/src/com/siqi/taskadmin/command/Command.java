@@ -1,9 +1,11 @@
-package com.siqi.taskadmin.parser;
+package com.siqi.taskadmin.command;
+
+import com.siqi.taskadmin.menu.CommandWord;
 
 public class Command {
 	private CommandWord commandWord;
 
-	Command(CommandWord commandWord) {
+	public Command(CommandWord commandWord) {
 
 		this.commandWord = commandWord;
 	}

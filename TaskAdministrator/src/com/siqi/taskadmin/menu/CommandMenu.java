@@ -5,8 +5,6 @@ package com.siqi.taskadmin.menu;
 
 import java.util.HashMap;
 
-import com.siqi.taskadmin.parser.CommandWord;
-
 /**
  * This class is part of the "ToDoly" application. "ToDoly" is a small
  * application which is used to administrate all the tasks owned by user.
@@ -30,19 +28,19 @@ public class CommandMenu {
 		CommandWord.SHOW.addChildCommand(CommandWord.BYPROJECT);
 		CommandWord.BYDATE.getChildCommandWords().clear();
 		CommandWord.BYDATE.addChildCommand(CommandWord.REMOVE);
-		CommandWord.BYDATE.addChildCommand(CommandWord.EDIT);
-		CommandWord.EDIT.getChildCommandWords().clear();
-		CommandWord.EDIT.addChildCommand(CommandWord.SAVEANDRETURN);
-		CommandWord.EDIT.addChildCommand(CommandWord.QUITANDRETURN);
+		CommandWord.BYDATE.addChildCommand(CommandWord.EDITALL);
 		CommandWord.BYDATE.addChildCommand(CommandWord.RETURNTOMAIN);
+		CommandWord.EDITALL.getChildCommandWords().clear();
+		CommandWord.EDITALL.addChildCommand(CommandWord.SAVEANDRETURNAFTEREDIT);
+		CommandWord.EDITALL.addChildCommand(CommandWord.QUITANDRETURNAFTEREDIT);
 		CommandWord.BYPROJECT.getChildCommandWords().clear();
 		CommandWord.BYPROJECT.addChildCommand(CommandWord.REMOVE);
-		CommandWord.BYPROJECT.addChildCommand(CommandWord.EDIT);
+		CommandWord.BYPROJECT.addChildCommand(CommandWord.EDITALL);
 		CommandWord.BYPROJECT.addChildCommand(CommandWord.RETURNTOMAIN);
 		commandMenu.put(2, CommandWord.ADD);
 		CommandWord.ADD.getChildCommandWords().clear();
-		CommandWord.ADD.addChildCommand(CommandWord.SAVEANDRETURN);
-		CommandWord.ADD.addChildCommand(CommandWord.QUITANDRETURN);
+		CommandWord.ADD.addChildCommand(CommandWord.SAVEANDRETURNAFTERADD);
+		CommandWord.ADD.addChildCommand(CommandWord.QUITANDRETURNAFTERADD);
 		commandMenu.put(3, CommandWord.QUIT);
 	}
 

@@ -80,7 +80,7 @@ public class TasksAdmin {
 	}
 	
 	public Tasks getTasksFilterByProject(String projectName,Tasks tasks) {
-		Tasks filteredTasks = getTasksSortByDate(tasks);
+		Tasks filteredTasks = new Tasks();
 		ArrayList<Task> filteredTasksList = tasks.getTasks().stream().filter(t -> t.getProject().contains(projectName))
 				.collect(Collectors.toCollection(ArrayList::new));
 		filteredTasks.setTasks(filteredTasksList);

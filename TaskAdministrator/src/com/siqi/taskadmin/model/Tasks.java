@@ -4,6 +4,7 @@
 package com.siqi.taskadmin.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -67,6 +68,20 @@ public class Tasks {
 		}	
 	}
 	
+	public boolean containTask(int taskId) {
+		boolean contain = false;
+		Iterator<Task> it = tasksList.iterator();
+		while (it.hasNext()) {
+			Task task = (Task) it.next();
+			if (task.getId() == taskId) {
+				contain = true;
+				return contain;
+			}
+		}
+		System.out.println("Sorry, taskId does not exist!");
+		return contain;
+	}
+		
 	public int[] getNumberOfTasksByStatus() {
 		int[] taskNumber=new int[2];
 		for(Task task: tasksList) {
