@@ -21,12 +21,11 @@ import java.util.Scanner;
  * @version 2018.9.13
  */
 public class CommandParser {
-	private CommandMenu commandMenu; 
+	
 	private Scanner reader; 
 	private String inputCommandWord;
 	
 	public CommandParser() {
-		commandMenu = new CommandMenu();
 		reader = new Scanner(System.in);
 	}
 	
@@ -38,6 +37,7 @@ public class CommandParser {
 	
 	public CommandWord getTopMenuCommand() {
 		readCommand();
+		CommandMenu commandMenu = new CommandMenu(); 
 		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
 			return commandMenu.getCommandWord(Integer.parseInt(inputCommandWord));
 		}
