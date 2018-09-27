@@ -2,7 +2,6 @@ package com.siqi.taskadmin;
 
 import java.util.Date;
 
-import com.siqi.taskadmin.command.Command;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.menu.CommandWord;
 import com.siqi.taskadmin.parser.CommandParser;
@@ -32,26 +31,17 @@ public class ToDolyMainEntry {
 		tasksNumberBystatus = new int[2];
 	}
 
-	public ToDolyMainEntry(Tasks tasks) {
-		commandParser = new CommandParser();
-		menu = new CommandMenu();
-		tasksAdmin = new TasksAdmin();
-		this.tasks = tasks;
-		tasksNumberBystatus = new int[2];
-	}
-
 	public void start() {
 		printWelcome();
 		boolean finished = false;
 		while (!finished) {
-			Command command = commandParser.getTopMenuCommand();
-			finished = processCommand(command);
+			CommandWord commandWord = commandParser.getTopMenuCommand();
+			finished = processCommand(commandWord);
 		}
 	}
 
-	public boolean processCommand(Command command) {
+	public boolean processCommand(CommandWord commandWord) {
 		boolean wantToQuit = false;
-		CommandWord commandWord = command.getCommandWord();
 		switch (commandWord) {
 		case UNKNOWN:
 			System.out.println("Please type in a proper number...");
@@ -65,7 +55,7 @@ public class ToDolyMainEntry {
 			wantToQuit = true;
 			break;
 		case QUIT:
-			quit(command);
+			quit();
 			wantToQuit = true;
 			break;
 		case SAVEANDRETURNAFTERADD:
@@ -119,7 +109,7 @@ public class ToDolyMainEntry {
 		menu.printTopMenu();
 	}
 
-	private void quit(Command command) {
+	private void quit() {
 		save();
 		System.out.println("Thank you for using ToDoly.  Good bye.");
 	}
@@ -160,8 +150,8 @@ public class ToDolyMainEntry {
 		menu.printChildMenu(CommandWord.EDITALL);
 		boolean finished = false;
 		while (!finished) {
-			Command command = commandParser.getChildMenuCommand(CommandWord.EDITALL);
-			finished = processCommand(command);
+			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.EDITALL);
+			finished = processCommand(commandWord);
 		}
 
 	}
@@ -200,8 +190,8 @@ public class ToDolyMainEntry {
 		menu.printChildMenu(CommandWord.SHOW);
 		boolean finished = false;
 		while (!finished) {
-			Command command = commandParser.getChildMenuCommand(CommandWord.SHOW);
-			finished = processCommand(command);
+			CommandWord commandword = commandParser.getChildMenuCommand(CommandWord.SHOW);
+			finished = processCommand(commandword);
 		}
 	}
 
@@ -213,8 +203,8 @@ public class ToDolyMainEntry {
 			menu.printChildMenu(CommandWord.BYDATE);
 			boolean finished = false;
 			while (!finished) {
-				Command command = commandParser.getChildMenuCommand(CommandWord.BYDATE);
-				finished = processCommand(command);
+				CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.BYDATE);
+				finished = processCommand(commandWord);
 			}
 		} else {
 			System.out.println("There is no task currently!");
@@ -231,8 +221,8 @@ public class ToDolyMainEntry {
 			currentTasks.showAllTheTask();
 			menu.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
-				Command command = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
-				finished = processCommand(command);
+				CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
+				finished = processCommand(commandWord);
 			}
 		} else {
 			System.out.println("There is no task currently!");
@@ -246,8 +236,8 @@ public class ToDolyMainEntry {
 		menu.printChildMenu(CommandWord.ADD);
 		boolean finished = false;
 		while (!finished) {
-			Command command = commandParser.getChildMenuCommand(CommandWord.ADD);
-			finished = processCommand(command);
+			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.ADD);
+			finished = processCommand(commandWord);
 		}
 	}
 

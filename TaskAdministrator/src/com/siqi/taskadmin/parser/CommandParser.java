@@ -1,6 +1,5 @@
 package com.siqi.taskadmin.parser;
 
-import com.siqi.taskadmin.command.Command;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.menu.CommandWord;
 import com.siqi.taskadmin.util.DataUtil;
@@ -37,20 +36,20 @@ public class CommandParser {
 		return inputCommandWord;
 	}
 	
-	public Command getTopMenuCommand() {
+	public CommandWord getTopMenuCommand() {
 		readCommand();
 		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
-			return new Command(commandMenu.getCommandWord(Integer.parseInt(inputCommandWord)));
+			return commandMenu.getCommandWord(Integer.parseInt(inputCommandWord));
 		}
-		return new Command(CommandWord.UNKNOWN);
+		return CommandWord.UNKNOWN;
 	}
 	
-	public Command getChildMenuCommand(CommandWord commandWord) {
+	public CommandWord getChildMenuCommand(CommandWord commandWord) {
 		readCommand();
 		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
-			return new Command(commandWord.getSingleChildCommandWord(Integer.parseInt(inputCommandWord)));
+			return commandWord.getSingleChildCommandWord(Integer.parseInt(inputCommandWord));
 		}
-		return new Command(CommandWord.UNKNOWN);
+		return CommandWord.UNKNOWN;
 	}
 	
 }
