@@ -1,12 +1,11 @@
 package com.siqi.taskadmin;
 
+import java.util.Date;
+
 import com.siqi.taskadmin.command.Command;
 import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.menu.CommandWord;
 import com.siqi.taskadmin.parser.CommandParser;
-import com.siqi.taskadmin.parser.ProjectNameParser;
-import com.siqi.taskadmin.parser.TaskContentParser;
-import com.siqi.taskadmin.parser.TaskIndexParser;
 import com.siqi.taskadmin.util.DataUtil;
 import com.siqi.taskadmin.controller.TasksAdmin;
 import com.siqi.taskadmin.model.Task;
@@ -15,7 +14,6 @@ import com.siqi.taskadmin.model.Tasks;
 public class ToDolyMainEntry {
 
 	private CommandParser commandParser;
-	private TaskContentParser taskContentParser;
 	private CommandMenu menu;
 	private TasksAdmin tasksAdmin;
 	private Tasks tasks;
@@ -32,7 +30,6 @@ public class ToDolyMainEntry {
 		currentTasks = new Tasks();
 		tasks = tasksAdmin.loadAllTasks();
 		tasksNumberBystatus = new int[2];
-		taskContentParser = new TaskContentParser();
 	}
 
 	public ToDolyMainEntry(Tasks tasks) {
@@ -148,8 +145,7 @@ public class ToDolyMainEntry {
 		boolean editFinished = false;
 		int taskId = 0;
 		while (!editFinished) {
-			TaskIndexParser taskIndexParser = new TaskIndexParser();
-			String idStr = taskIndexParser.readTaskId();
+			String idStr = commandParser.readCommand();
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskId = Integer.parseInt(idStr);
 				if (currentTasks.containTask(taskId)) {
@@ -184,8 +180,7 @@ public class ToDolyMainEntry {
 		boolean finished = false;
 		int taskId = 0;
 		while (!finished) {
-			TaskIndexParser taskIndexParser = new TaskIndexParser();
-			String idStr = taskIndexParser.readTaskId();
+			String idStr = commandParser.readCommand();
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskId = Integer.parseInt(idStr);
 				if (currentTasks.containTask(taskId)) {
@@ -229,8 +224,7 @@ public class ToDolyMainEntry {
 
 	private void filterByProject() {
 		System.out.println("Please input project name: ");
-		ProjectNameParser projectNameParser = new ProjectNameParser();
-		String projectName = projectNameParser.readProjectName();
+		String projectName = commandParser.readCommand();
 		currentTasks = tasksAdmin.getTasksFilterByProject(projectName, tasks);
 		boolean finished = false;
 		if (currentTasks != null && currentTasks.getNumberOfTask() != 0) {
@@ -261,21 +255,24 @@ public class ToDolyMainEntry {
 		boolean isDate = false;
 		boolean isEmpty = true;
 		String taskTitle = "";
-		String dueDate = "";
+		Date dueDate = new Date();
 		while (isEmpty) {
 			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
-			taskTitle = taskContentParser.readTaskContent();
+			taskTitle = commandParser.readCommand();
 			if (taskTitle != null && !taskTitle.equals("")) {
 				isEmpty = false;
 			}
 		}
 		while (!isDate) {
-			System.out.println("DueDate(YYYY--MM-DD):");
-			dueDate = taskContentParser.readTaskContent();
-			isDate = DataUtil.isDate(dueDate);
+			System.out.println("DueDate(DD--MM-YYYY):");
+			String dueDateStr  = commandParser.readCommand();
+			dueDate = DataUtil.createDate(dueDateStr);
+			if (dueDate!=null) {
+				isDate=true;
+			}
 		}
 		System.out.println("Project Name: ");
-		String projectName = taskContentParser.readTaskContent();
+		String projectName = commandParser.readCommand();
 		task.setId(Tasks.getBiggestId() + 1);
 		task.setTitle(taskTitle);
 		task.setDuedate(dueDate);
@@ -285,18 +282,21 @@ public class ToDolyMainEntry {
 	private void getEditTaskItems() {
 		boolean isDate = false;
 		boolean isStatus = false;
-		String dueDate = "";
+		Date dueDate = new Date();
 		String status = "";
 		while (!isDate) {
-			System.out.println("DueDate(YYYY--MM-DD):");
-			dueDate = taskContentParser.readTaskContent();
-			isDate = DataUtil.isDate(dueDate);
+			System.out.println("DueDate(DD--MM-YYYY):");
+			String dueDateStr  = commandParser.readCommand();
+			dueDate = DataUtil.createDate(dueDateStr);
+			if (dueDate!=null) {
+				isDate=true;
+			}
 		}
 		System.out.println("Project Name: ");
-		String projectName = taskContentParser.readTaskContent();
+		String projectName = commandParser.readCommand();
 		while (!isStatus) {
 			System.out.println("Task Status(0:In progress; 1:Completed): ");
-			status = taskContentParser.readTaskContent();
+			status = commandParser.readCommand();
 			isStatus = DataUtil.isStatus(status);
 		}
 		task.setDuedate(dueDate);

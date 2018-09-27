@@ -1,9 +1,12 @@
 package com.siqi.taskadmin.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Task {
 	private int id;
 	private String title;
-	private String dueDate;
+	private Date dueDate;
 	private String projectName;
 	private boolean status;
 	
@@ -25,10 +28,10 @@ public class Task {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getDuedate() {
+	public Date getDuedate() {
 		return dueDate;
 	}
-	public void setDuedate(String dueDate) {
+	public void setDuedate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
 	public String getProject() {
@@ -43,9 +46,11 @@ public class Task {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	
 	public String getDetail() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		return "*****************************************\r "
-				+ "TaskId: "+id+"\r Task title:"+title+"\r Duedate:"+dueDate+"\r Project name:"
+				+ "TaskId: "+id+"\r Task title:"+title+"\r Duedate:"+formatter.format(dueDate)+"\r Project name:"
 				+projectName+"\r Status:"+(status==true?"Completed \r" :"In progress \r")
 				+ "*****************************************" ;
 	}

@@ -24,32 +24,33 @@ import java.util.Scanner;
 public class CommandParser {
 	private CommandMenu commandMenu; 
 	private Scanner reader; 
-	private String InputCommandWord;
+	private String inputCommandWord;
 	
 	public CommandParser() {
 		commandMenu = new CommandMenu();
 		reader = new Scanner(System.in);
 	}
 	
-	private void readCommand() {
+	public String readCommand() {
 		System.out.print("> "); 
-		InputCommandWord = reader.nextLine();
+		inputCommandWord = reader.nextLine();
+		return inputCommandWord;
 	}
 	
 	public Command getTopMenuCommand() {
 		readCommand();
-		if (DataUtil.isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
-			return new Command(commandMenu.getCommandWord(Integer.parseInt(InputCommandWord)));
+		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
+			return new Command(commandMenu.getCommandWord(Integer.parseInt(inputCommandWord)));
 		}
 		return new Command(CommandWord.UNKNOWN);
 	}
 	
 	public Command getChildMenuCommand(CommandWord commandWord) {
 		readCommand();
-		if (DataUtil.isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
-			return new Command(commandWord.getSingleChildCommandWord(Integer.parseInt(InputCommandWord)));
+		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
+			return new Command(commandWord.getSingleChildCommandWord(Integer.parseInt(inputCommandWord)));
 		}
 		return new Command(CommandWord.UNKNOWN);
 	}
-
+	
 }

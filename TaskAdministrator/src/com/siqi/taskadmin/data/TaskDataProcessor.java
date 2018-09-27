@@ -8,11 +8,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.Tasks;
+import com.siqi.taskadmin.util.DataUtil;
 
 public class TaskDataProcessor {
 	private int biggestId;
@@ -94,7 +98,8 @@ public class TaskDataProcessor {
 				task = new Task();
 				task.setId(taskJson.getInt("taskId"));
 				task.setTitle((String) taskJson.get("title"));
-				task.setDuedate((String) taskJson.get("dueDate"));
+				String dueDateStr = (String) taskJson.get("dueDate");
+				task.setDuedate(new SimpleDateFormat("dd-MM-yyyy").parse(dueDateStr));
 				task.setProject((String) taskJson.get("projectName"));
 				if (((String) taskJson.get("status")).equals("1")) {
 					task.setStatus(true);
@@ -105,6 +110,9 @@ public class TaskDataProcessor {
 				Tasks.setBiggestId(biggestId);
 
 			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			} catch (ParseException e) {
 				e.printStackTrace();
 				return null;
 			}
@@ -121,7 +129,7 @@ public class TaskDataProcessor {
 					JSONObject member = new JSONObject();
 					member.put("taskId", task.getId());
 					member.put("title", task.getTitle());
-					member.put("dueDate", task.getDuedate());
+					member.put("dueDate", DataUtil.dateToString(task.getDuedate()));
 					member.put("projectName", task.getProject());
 					member.put("status", task.isStatus() == true ? "1" : "0");
 					jsonMembers.put(member);
