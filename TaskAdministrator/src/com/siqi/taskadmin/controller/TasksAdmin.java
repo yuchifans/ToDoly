@@ -5,7 +5,8 @@ import com.siqi.taskadmin.model.Tasks;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-import com.siqi.taskadmin.data.TaskDataProcessor;;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+
 
 public class TasksAdmin {
 	private TaskDataProcessor taskDataProcessor;
