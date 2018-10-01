@@ -6,7 +6,8 @@ public enum CommandWord {
 
 	SHOW(0, 0, "Show all tasks(By date or project)"), ADD(0, 1, "Add new task"), QUIT(0, 2, "Quit and save"),
 	BYDATE(1, 0, "By date"),BYPROJECT(1, 1, "By project"),SAVEANDRETURNAFTERADD(1,0,"Save and return"), QUITANDRETURNAFTERADD(1,1,"Quit and return"),
-	SAVEANDRETURNAFTEREDIT(1,0,"Save and return"), QUITANDRETURNAFTEREDIT(1,1,"Quit and return"),RETURNTOMAIN(2,2,"Return"), REMOVE(2, 0, "Remove task"),EDITALL(2,1,"Edit task"),UNKNOWN(-1, 6, "?");
+	SAVEANDRETURNAFTEREDIT(1,0,"Save and return"), QUITANDRETURNAFTEREDIT(1,1,"Quit and return"),RETURNTOMAIN(2,2,"Return"), REMOVE(2, 0, "Remove task"),
+	EDIT(2,1,"Edit task"),UNKNOWN(-1, 6, "?");
 
 	private int commandType;
 	private int commandIndex;

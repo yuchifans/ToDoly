@@ -15,10 +15,6 @@ public class TaskList {
 		return (ArrayList<Task>) tasksList;
 	}
 
-	public void setTasks(ArrayList<Task> tasksList) {
-		this.tasksList = tasksList;
-	}
-
 	public void addTask(Task task) {
 		tasksList.add(task);
 	}
@@ -31,24 +27,19 @@ public class TaskList {
 	}
 
 	public void updateTask(Task task) {
-		if(tasksList.contains(task)) {
+		if (tasksList.contains(task)) {
 			tasksList.set(tasksList.indexOf(task), task);
-		}else {
+		} else {
 			System.out.println("Task does not exist!");
 		}
-		
-	}
-	public void removeTask(Task task) {
-		if(tasksList.contains(task)) {
-			tasksList.remove(task);
-		}else {
-			System.out.println("Task does not exist!");
-		}
+
 	}
 
-	public void removeTaskById(int taskId) {
-		if (taskId <= tasksList.size()) {
-			tasksList.remove(taskId - 1);
+	public void removeTask(Task task) {
+		if (tasksList.contains(task)) {
+			tasksList.remove(task);
+		} else {
+			System.out.println("Task does not exist!");
 		}
 	}
 
@@ -60,7 +51,7 @@ public class TaskList {
 		System.out.println("Task Detail:");
 		for (Task task : tasksList) {
 			System.out.println("***************************************** ");
-			System.out.println(" taskId:"+(tasksList.indexOf(task)+1)+"\r"+task.getDetail());
+			System.out.println(" taskId:" + (tasksList.indexOf(task) + 1) + "\r" + task.getDetail());
 		}
 	}
 
@@ -81,12 +72,14 @@ public class TaskList {
 	public TaskList getTasksFilterByProject(String projectName) {
 		TaskList filteredTasks = new TaskList();
 		getTasksSortByDate();
-		for(Task task:tasksList) {
-			if(task.getProject().equals(projectName)) {
+		for (Task task : tasksList) {
+			if (task.getProject().equals(projectName)) {
 				filteredTasks.getTasks().add(task);
 			}
 		}
-//		ArrayList<Task> filteredTasksList = tasks.getTasks().stream().filter(t -> t.getProject().equals(projectName)).collect(Collectors.toCollection(ArrayList::new));
+//		ArrayList<Task> filteredTasksList = 
+//		tasks.getTasks().stream().filter(t -> t.getProject().
+//		equals(projectName)).collect(Collectors.toCollection(ArrayList::new));
 //		filteredTasks.setTasks(filteredTasksList);
 		return filteredTasks;
 	}

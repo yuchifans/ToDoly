@@ -31,7 +31,7 @@ public class ToDolyMainEntry {
 	private CommandParser commandParser;
 	private CommandMenu menu;
 	private TaskList tasks;
-	private TaskDataProcessor taskDataProcessor ;
+	private TaskDataProcessor taskDataProcessor;
 	private TaskList currentTasks;
 	private Task task;
 	private int[] tasksNumberBystatus;
@@ -120,12 +120,12 @@ public class ToDolyMainEntry {
 			filterByProject();
 			wantToQuit = true;
 			break;
-		case EDITALL:
-			editAll(currentTasks);
+		case EDIT:
+			edit();
 			wantToQuit = true;
 			break;
 		case REMOVE:
-			remove(currentTasks);
+			remove();
 			wantToQuit = true;
 			break;
 		case RETURNTOMAIN:
@@ -171,7 +171,7 @@ public class ToDolyMainEntry {
 	 * Sort tasks by status and date. if task list is not empty, show all the task
 	 * and print a menu("edit" or "remove" or "return") and give the user three
 	 * options. Loops until the proper command has been got. if task list is empty,
-	 * give the user a notification. 
+	 * give the user a notification.
 	 */
 	private void showByDate() {
 		tasks.getTasksSortByDate();
@@ -190,6 +190,12 @@ public class ToDolyMainEntry {
 		}
 	}
 
+	/**
+	 * Get a project name from user,filter task list by the project name. If the
+	 * filtered task list is not empty, show all the task and print a menu("edit" or
+	 * "remove" or "return") and give the user three options. Loops until the proper
+	 * command has been got. if task list is empty, give the user a notification.
+	 */
 	private void filterByProject() {
 		System.out.println("Please input project name: ");
 		String projectName = commandParser.readCommand();
@@ -209,9 +215,9 @@ public class ToDolyMainEntry {
 	}
 
 	/**
-	 * Execute "add" operation. Get items of a specific task which is inputed by
-	 * user, then print a menu (save or quit) and give the user two options. Loops
-	 * until the proper command has been got.
+	 * "Add new task" option was choosed. Execute "add" operation. Get items of a
+	 * specific task which is inputed by user, then print a menu (save or quit) and
+	 * give the user two options. Loops until the proper command has been got.
 	 */
 	private void add() {
 
@@ -223,12 +229,11 @@ public class ToDolyMainEntry {
 			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.ADD);
 			finished = processCommand(commandWord);
 		}
-		
 
 	}
 
 	/**
-	 * "Quit and save" options was choosed. Save all the changes and print welfare
+	 * "Quit and save" option was choosed. Save all the changes and print welfare
 	 * information.
 	 */
 	private void quit() {
@@ -260,7 +265,7 @@ public class ToDolyMainEntry {
 
 	}
 
-	private void editAll(TaskList currentTasks) {
+	private void edit() {
 		System.out.println("------------------------------------------------------------------------------");
 		System.out.println("Please input an id of task you want to edit.");
 		boolean editFinished = false;
@@ -270,7 +275,7 @@ public class ToDolyMainEntry {
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskId = Integer.parseInt(idStr);
 				if (currentTasks.containTask(taskId)) {
-					task=currentTasks.getTaskById(taskId);
+					task = currentTasks.getTaskById(taskId);
 					printSelectedTask(taskId);
 					getEditTaskItems();
 					editFinished = true;
@@ -279,10 +284,10 @@ public class ToDolyMainEntry {
 				System.out.println("Please input a proper id number.");
 			}
 		}
-		menu.printChildMenu(CommandWord.EDITALL);
+		menu.printChildMenu(CommandWord.EDIT);
 		boolean finished = false;
 		while (!finished) {
-			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.EDITALL);
+			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.EDIT);
 			finished = processCommand(commandWord);
 		}
 
@@ -296,7 +301,7 @@ public class ToDolyMainEntry {
 		}
 	}
 
-	private void remove(TaskList currentTasks) {
+	private void remove() {
 		System.out.println("------------------------------------------------------------------------------");
 		System.out.println("Please input an id of task you want to remove.");
 		boolean finished = false;
@@ -322,7 +327,7 @@ public class ToDolyMainEntry {
 		boolean isEmpty = true;
 		String taskTitle = "";
 		Date dueDate = new Date();
-		task= new Task();
+		task = new Task();
 		while (isEmpty) {
 			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
 			taskTitle = commandParser.readCommand();
