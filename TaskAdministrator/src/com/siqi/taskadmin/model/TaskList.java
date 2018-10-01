@@ -1,21 +1,16 @@
-/**
- * 
- */
 package com.siqi.taskadmin.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * @author tmp-sda-1162
- *
- */
-public class Tasks {
+public class TaskList {
 	private static int biggestId;
 	private List<Task> tasksList;
 
-	public Tasks() {
+	public TaskList() {
 		tasksList=new ArrayList<>();
 	}
 	
@@ -46,6 +41,11 @@ public class Tasks {
 			}
 		}
 		return null;
+	}
+	
+	public void updateTask(Task task) {
+		removeById(task.getId());
+		add(task);
 	}
 	
 	public void removeById(int taskId) {
@@ -81,6 +81,21 @@ public class Tasks {
 		System.out.println("Sorry, taskId does not exist!");
 		return contain;
 	}
+	
+	public void getTasksSortByDate() {
+		
+			tasksList.sort(Comparator.comparing(Task::isStatus).thenComparing(Task::getDuedate));	
+		
+	}
+
+	public TaskList getTasksFilterByProject(String projectName,TaskList tasks) {
+		TaskList filteredTasks = new TaskList();
+		getTasksSortByDate();
+		ArrayList<Task> filteredTasksList = tasks.getTasks().stream().filter(t -> t.getProject().contains(projectName))
+				.collect(Collectors.toCollection(ArrayList::new));
+		filteredTasks.setTasks(filteredTasksList);
+		return filteredTasks;
+	}
 		
 	public int[] getNumberOfTasksByStatus() {
 		int[] taskNumber=new int[2];
@@ -93,4 +108,5 @@ public class Tasks {
 		}	
 		return taskNumber;
 	}
+	
 }

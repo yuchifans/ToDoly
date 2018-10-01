@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.siqi.taskadmin.model.Task;
-import com.siqi.taskadmin.model.Tasks;
+import com.siqi.taskadmin.model.TaskList;
 import com.siqi.taskadmin.util.DataUtil;
 
 public class TaskDataProcessor {
@@ -27,14 +27,14 @@ public class TaskDataProcessor {
 	private BufferedReader br;
 	private StringBuilder jsonStr;
 	private Task task;
-	private Tasks tasks;
+	private TaskList tasks;
 
 	public TaskDataProcessor() {
 		jsonStr = new StringBuilder();
 		json = new JSONObject();
 		jsonMembers = new JSONArray();
 		biggestId = 0;
-		tasks = new Tasks();
+		tasks = new TaskList();
 		task = new Task();
 	}
 
@@ -87,15 +87,14 @@ public class TaskDataProcessor {
 		}
 	}
 
-	public Tasks read() {
+	public TaskList read() {
 		load();
 		task = new Task();
-		tasks = new Tasks();
+		tasks = new TaskList();
 		for (int i = 0; i < jsonMembers.length(); i++) {
 			JSONObject taskJson = new JSONObject();
 			try {
 				taskJson = (JSONObject) jsonMembers.get(i);
-				task = new Task();
 				task.setId(taskJson.getInt("taskId"));
 				task.setTitle((String) taskJson.get("title"));
 				String dueDateStr = (String) taskJson.get("dueDate");
@@ -107,7 +106,7 @@ public class TaskDataProcessor {
 					task.setStatus(false);
 				}
 				tasks.add(task);
-				Tasks.setBiggestId(biggestId);
+				TaskList.setBiggestId(biggestId);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -120,7 +119,7 @@ public class TaskDataProcessor {
 		return tasks;
 	}
 
-	public void write(Tasks tasks) {
+	public void write(TaskList tasks) {
 		getFile();
 		jsonMembers = new JSONArray();
 		if (tasks.getNumberOfTask() != 0) {
@@ -140,7 +139,7 @@ public class TaskDataProcessor {
 			}
 			try {
 				json.put("tasks", jsonMembers);
-				json.put("biggestID", Tasks.getBiggestId());
+				json.put("biggestID", TaskList.getBiggestId());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
