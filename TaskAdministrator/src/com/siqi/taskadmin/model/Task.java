@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task {
-	private int id;
 	private String title;
 	private Date dueDate;
 	private String projectName;
@@ -12,14 +11,6 @@ public class Task {
 	
 	public Task() {
 		
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getTitle() {
@@ -49,8 +40,7 @@ public class Task {
 	
 	public String getDetail() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		return "*****************************************\r "
-				+ "TaskId: "+id+"\r Task title:"+title+"\r Duedate:"+formatter.format(dueDate)+"\r Project name:"
+		return  " Task title:"+title+"\r Duedate:"+formatter.format(dueDate)+"\r Project name:"
 				+projectName+"\r Status:"+(status==true?"Completed \r" :"In progress \r")
 				+ "*****************************************" ;
 	}

@@ -2,111 +2,105 @@ package com.siqi.taskadmin.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TaskList {
-	private static int biggestId;
 	private List<Task> tasksList;
 
 	public TaskList() {
-		tasksList=new ArrayList<>();
-	}
-	
-	public static void  setBiggestId(int id) {
-		biggestId=id;
-	}
-	
-	public static int getBiggestId() {
-		return biggestId;
+		tasksList = new ArrayList<>();
 	}
 
 	public ArrayList<Task> getTasks() {
-		return (ArrayList<Task>)tasksList;
+		return (ArrayList<Task>) tasksList;
 	}
 
 	public void setTasks(ArrayList<Task> tasksList) {
 		this.tasksList = tasksList;
 	}
-	
-	public void add(Task task) {
+
+	public void addTask(Task task) {
 		tasksList.add(task);
 	}
-	
-	public Task getById(int taskId) {
-		for(Task task:tasksList) {
-			if(task.getId()==taskId) {
-				return task;
-			}
+
+	public Task getTaskById(int taskId) {
+		if (taskId <= tasksList.size()) {
+			return tasksList.get(taskId - 1);
 		}
 		return null;
 	}
-	
+
 	public void updateTask(Task task) {
-		removeById(task.getId());
-		add(task);
-	}
-	
-	public void removeById(int taskId) {
-		for(Task task:tasksList) {
-			if(task.getId()==taskId) {
-				tasksList.remove(task);
-				break;
-			}
+		if(tasksList.contains(task)) {
+			tasksList.set(tasksList.indexOf(task), task);
+		}else {
+			System.out.println("Task does not exist!");
 		}
+		
 	}
-	
-	public int getNumberOfTask() {
-		return tasksList.size();
-	}
-	
-	public void showAllTheTask() {
-		System.out.println("Task Detail:");
-		for(Task task: tasksList) {
-			System.out.println(task.getDetail());
-		}	
-	}
-	
-	public boolean containTask(int taskId) {
-		boolean contain = false;
-		Iterator<Task> it = tasksList.iterator();
-		while (it.hasNext()) {
-			Task task = (Task) it.next();
-			if (task.getId() == taskId) {
-				contain = true;
-				return contain;
-			}
+	public void removeTask(Task task) {
+		if(tasksList.contains(task)) {
+			tasksList.remove(task);
+		}else {
+			System.out.println("Task does not exist!");
 		}
-		System.out.println("Sorry, taskId does not exist!");
-		return contain;
-	}
-	
-	public void getTasksSortByDate() {
-		
-			tasksList.sort(Comparator.comparing(Task::isStatus).thenComparing(Task::getDuedate));	
-		
 	}
 
-	public TaskList getTasksFilterByProject(String projectName,TaskList tasks) {
+	public void removeTaskById(int taskId) {
+		if (taskId <= tasksList.size()) {
+			tasksList.remove(taskId - 1);
+		}
+	}
+
+	public int getNumberOfTasks() {
+		return tasksList.size();
+	}
+
+	public void showAllTasks() {
+		System.out.println("Task Detail:");
+		for (Task task : tasksList) {
+			System.out.println("***************************************** ");
+			System.out.println(" taskId:"+(tasksList.indexOf(task)+1)+"\r"+task.getDetail());
+		}
+	}
+
+	public boolean containTask(int taskId) {
+		boolean contain = false;
+		if (taskId > 0 && taskId <= tasksList.size()) {
+			contain = true;
+		} else {
+			System.out.println("Sorry, taskId does not exist!");
+		}
+		return contain;
+	}
+
+	public void getTasksSortByDate() {
+		tasksList.sort(Comparator.comparing(Task::isStatus).thenComparing(Task::getDuedate));
+	}
+
+	public TaskList getTasksFilterByProject(String projectName) {
 		TaskList filteredTasks = new TaskList();
 		getTasksSortByDate();
-		ArrayList<Task> filteredTasksList = tasks.getTasks().stream().filter(t -> t.getProject().contains(projectName))
-				.collect(Collectors.toCollection(ArrayList::new));
-		filteredTasks.setTasks(filteredTasksList);
+		for(Task task:tasksList) {
+			if(task.getProject().equals(projectName)) {
+				filteredTasks.getTasks().add(task);
+			}
+		}
+//		ArrayList<Task> filteredTasksList = tasks.getTasks().stream().filter(t -> t.getProject().equals(projectName)).collect(Collectors.toCollection(ArrayList::new));
+//		filteredTasks.setTasks(filteredTasksList);
 		return filteredTasks;
 	}
-		
+
 	public int[] getNumberOfTasksByStatus() {
-		int[] taskNumber=new int[2];
-		for(Task task: tasksList) {
-			if(task.isStatus()==false) {
+		int[] taskNumber = new int[2];
+		for (Task task : tasksList) {
+			if (task.isStatus() == false) {
 				taskNumber[0]++;
-			}else {
+			} else {
 				taskNumber[1]++;
 			}
-		}	
+		}
 		return taskNumber;
 	}
-	
+
 }

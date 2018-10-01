@@ -47,6 +47,7 @@ public class ToDolyMainEntry {
 		tasks = new TaskList();
 		task = new Task();
 		currentTasks = new TaskList();
+		taskDataProcessor = new TaskDataProcessor();
 		tasks = taskDataProcessor.read();
 		tasksNumberBystatus = new int[2];
 
@@ -174,8 +175,8 @@ public class ToDolyMainEntry {
 	 */
 	private void showByDate() {
 		tasks.getTasksSortByDate();
-		if (tasks != null && tasks.getNumberOfTask() != 0) {
-			tasks.showAllTheTask();
+		if (tasks != null && tasks.getNumberOfTasks() != 0) {
+			tasks.showAllTasks();
 			currentTasks = tasks;
 			menu.printChildMenu(CommandWord.BYDATE);
 			boolean finished = false;
@@ -192,10 +193,10 @@ public class ToDolyMainEntry {
 	private void filterByProject() {
 		System.out.println("Please input project name: ");
 		String projectName = commandParser.readCommand();
-		currentTasks = tasks.getTasksFilterByProject(projectName, tasks);
+		currentTasks = tasks.getTasksFilterByProject(projectName);
 		boolean finished = false;
-		if (currentTasks != null && currentTasks.getNumberOfTask() != 0) {
-			currentTasks.showAllTheTask();
+		if (currentTasks != null && currentTasks.getNumberOfTasks() != 0) {
+			currentTasks.showAllTasks();
 			menu.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
 				CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.BYPROJECT);
@@ -222,6 +223,7 @@ public class ToDolyMainEntry {
 			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.ADD);
 			finished = processCommand(commandWord);
 		}
+		
 
 	}
 
@@ -242,10 +244,7 @@ public class ToDolyMainEntry {
 	 */
 	private void temporaryAdd() {
 
-		tasks.add(task);
-		// Increment of the biggest id of tasks by 1.
-		// The next id of task to be added will not get the same id as before.
-		TaskList.setBiggestId(TaskList.getBiggestId() + 1);
+		tasks.addTask(task);
 		System.out.println("The task has been added.");
 
 	}
@@ -271,6 +270,7 @@ public class ToDolyMainEntry {
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskId = Integer.parseInt(idStr);
 				if (currentTasks.containTask(taskId)) {
+					task=currentTasks.getTaskById(taskId);
 					printSelectedTask(taskId);
 					getEditTaskItems();
 					editFinished = true;
@@ -289,10 +289,10 @@ public class ToDolyMainEntry {
 	}
 
 	private void printSelectedTask(int taskId) {
-		task = tasks.getById(taskId);
+		task = currentTasks.getTaskById(taskId);
 		if (task != null) {
 			System.out.println("*****************************************\r");
-			System.out.println("TaskId:" + task.getId() + "\r" + "Task Title:" + task.getTitle());
+			System.out.println("TaskId:" + taskId + "\r" + "Task Title:" + task.getTitle());
 		}
 	}
 
@@ -306,7 +306,7 @@ public class ToDolyMainEntry {
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskId = Integer.parseInt(idStr);
 				if (currentTasks.containTask(taskId)) {
-					tasks.removeById(taskId);
+					tasks.removeTask(currentTasks.getTaskById(taskId));
 					System.out.println("The task has been removed");
 					start();
 					finished = true;
@@ -322,6 +322,7 @@ public class ToDolyMainEntry {
 		boolean isEmpty = true;
 		String taskTitle = "";
 		Date dueDate = new Date();
+		task= new Task();
 		while (isEmpty) {
 			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
 			taskTitle = commandParser.readCommand();
@@ -339,7 +340,6 @@ public class ToDolyMainEntry {
 		}
 		System.out.println("Project Name: ");
 		String projectName = commandParser.readCommand();
-		task.setId(TaskList.getBiggestId() + 1);
 		task.setTitle(taskTitle);
 		task.setDuedate(dueDate);
 		task.setProject(projectName);
@@ -372,7 +372,6 @@ public class ToDolyMainEntry {
 		} else {
 			task.setStatus(false);
 		}
-
 	}
 
 	public static void main(String[] args) {

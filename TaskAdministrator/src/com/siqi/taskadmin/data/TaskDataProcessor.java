@@ -26,7 +26,6 @@ public class TaskDataProcessor {
 	private FileReader fr;
 	private BufferedReader br;
 	private StringBuilder jsonStr;
-	private Task task;
 	private TaskList tasks;
 
 	public TaskDataProcessor() {
@@ -35,7 +34,6 @@ public class TaskDataProcessor {
 		jsonMembers = new JSONArray();
 		biggestId = 0;
 		tasks = new TaskList();
-		task = new Task();
 	}
 
 	private boolean getFile() {
@@ -89,13 +87,12 @@ public class TaskDataProcessor {
 
 	public TaskList read() {
 		load();
-		task = new Task();
 		tasks = new TaskList();
 		for (int i = 0; i < jsonMembers.length(); i++) {
 			JSONObject taskJson = new JSONObject();
 			try {
+				Task task = new Task();
 				taskJson = (JSONObject) jsonMembers.get(i);
-				task.setId(taskJson.getInt("taskId"));
 				task.setTitle((String) taskJson.get("title"));
 				String dueDateStr = (String) taskJson.get("dueDate");
 				task.setDuedate(new SimpleDateFormat("dd-MM-yyyy").parse(dueDateStr));
@@ -105,8 +102,7 @@ public class TaskDataProcessor {
 				} else {
 					task.setStatus(false);
 				}
-				tasks.add(task);
-				TaskList.setBiggestId(biggestId);
+				tasks.addTask(task);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -122,11 +118,10 @@ public class TaskDataProcessor {
 	public void write(TaskList tasks) {
 		getFile();
 		jsonMembers = new JSONArray();
-		if (tasks.getNumberOfTask() != 0) {
+		if (tasks.getNumberOfTasks() != 0) {
 			for (Task task : tasks.getTasks()) {
 				try {
 					JSONObject member = new JSONObject();
-					member.put("taskId", task.getId());
 					member.put("title", task.getTitle());
 					member.put("dueDate", DataUtil.dateToString(task.getDuedate()));
 					member.put("projectName", task.getProject());
@@ -139,7 +134,6 @@ public class TaskDataProcessor {
 			}
 			try {
 				json.put("tasks", jsonMembers);
-				json.put("biggestID", TaskList.getBiggestId());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
