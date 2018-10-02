@@ -266,7 +266,6 @@ public class ToDolyMainEntry {
 		taskToBeUpated.setDuedate(task.getDuedate());
 		taskToBeUpated.setProject(task.getProject());
 		taskToBeUpated.setStatus(task.isStatus());
-		//tasks.updateTask(taskToBeUpated);
 		System.out.println("The task has been updated.");
 
 	}
