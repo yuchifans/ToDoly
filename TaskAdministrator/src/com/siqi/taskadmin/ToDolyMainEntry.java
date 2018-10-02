@@ -203,7 +203,7 @@ public class ToDolyMainEntry {
 		currentTasks = tasks.getTasksFilterByProject(projectName);
 		boolean finished = false;
 		if (currentTasks != null && currentTasks.getNumberOfTasks() != 0) {
-			System.out.println(currentTasks.getTasks().get(0)==tasks.getTasks().get(0));
+			System.out.println(currentTasks.getTasks().get(0) == tasks.getTasks().get(0));
 			currentTasks.showAllTasks();
 			menu.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
@@ -261,12 +261,16 @@ public class ToDolyMainEntry {
 	 * has not been saved to the file.
 	 */
 	private void temporaryUpate() {
-		
+
 		Task taskToBeUpated = currentTasks.getTaskById(taskIndexToBeUpdated);
-		taskToBeUpated.setDuedate(task.getDuedate());
-		taskToBeUpated.setProject(task.getProject());
-		taskToBeUpated.setStatus(task.isStatus());
-		System.out.println("The task has been updated.");
+		if (tasks.getTasks().contains(taskToBeUpated)) {
+			taskToBeUpated.setDuedate(task.getDuedate());
+			taskToBeUpated.setProject(task.getProject());
+			taskToBeUpated.setStatus(task.isStatus());
+			System.out.println("The task has been updated.");
+		}else {
+			System.out.println("Task has not been found.");
+		}
 
 	}
 
