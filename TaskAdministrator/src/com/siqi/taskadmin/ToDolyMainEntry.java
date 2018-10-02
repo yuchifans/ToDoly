@@ -61,7 +61,6 @@ public class ToDolyMainEntry {
 	public void start() {
 
 		printWelcome();
-
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them the valid command has been type in by user.
 		boolean finished = false;
@@ -257,8 +256,9 @@ public class ToDolyMainEntry {
 	}
 
 	/**
-	 * Update a task in the task list temporarily. The change of "update" operation
-	 * has not been saved to the file.
+	 * "Save and return" option is choosed after editing a specific task. Update a
+	 * task in the task list temporarily. The change of "update" operation has not
+	 * been saved to the file.
 	 */
 	private void temporaryUpate() {
 
@@ -268,20 +268,32 @@ public class ToDolyMainEntry {
 			taskToBeUpated.setProject(task.getProject());
 			taskToBeUpated.setStatus(task.isStatus());
 			System.out.println("The task has been updated.");
-		}else {
+		} else {
 			System.out.println("Task has not been found.");
 		}
 
 	}
 
+	/**
+	 * "Edit" option is choosed by user after system displays the tasklist. Loops
+	 * until a proper index of task to be edited has been got. Judge whether the
+	 * task selected is in the current task list was displayed. If true, print out
+	 * the id and title of the task to be edited and get task items to be updated,
+	 * give user a notification otherwise. if the editing is completed, print a
+	 * menu("save and return" or "quit and return") and give the user two options.
+	 * Loops until the proper command has been got.
+	 */
 	private void edit() {
 		System.out.println("------------------------------------------------------------------------------");
 		System.out.println("Please input an id of task you want to edit.");
 		boolean editFinished = false;
 		while (!editFinished) {
 			String idStr = commandParser.readCommand();
+			// Judge whether user types in is an integer
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskIndexToBeUpdated = Integer.parseInt(idStr);
+				// Judge if task which user chooses is in the current task list which was
+				// displayed.
 				if (currentTasks.containTask(taskIndexToBeUpdated)) {
 					printSelectedTask(taskIndexToBeUpdated);
 					getEditTaskItems();
