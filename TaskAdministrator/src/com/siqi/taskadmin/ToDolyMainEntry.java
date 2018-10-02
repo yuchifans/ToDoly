@@ -35,6 +35,7 @@ public class ToDolyMainEntry {
 	private TaskList currentTasks;
 	private Task task;
 	private int[] tasksNumberBystatus;
+	private int taskIndexToBeUpdated;
 
 	/**
 	 * Constructor. Create the main entry of the application and initialize all the
@@ -202,6 +203,7 @@ public class ToDolyMainEntry {
 		currentTasks = tasks.getTasksFilterByProject(projectName);
 		boolean finished = false;
 		if (currentTasks != null && currentTasks.getNumberOfTasks() != 0) {
+			System.out.println(currentTasks.getTasks().get(0)==tasks.getTasks().get(0));
 			currentTasks.showAllTasks();
 			menu.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
@@ -259,8 +261,12 @@ public class ToDolyMainEntry {
 	 * has not been saved to the file.
 	 */
 	private void temporaryUpate() {
-
-		tasks.updateTask(task);
+		
+		Task taskToBeUpated = currentTasks.getTaskById(taskIndexToBeUpdated);
+		taskToBeUpated.setDuedate(task.getDuedate());
+		taskToBeUpated.setProject(task.getProject());
+		taskToBeUpated.setStatus(task.isStatus());
+		//tasks.updateTask(taskToBeUpated);
 		System.out.println("The task has been updated.");
 
 	}
@@ -269,14 +275,12 @@ public class ToDolyMainEntry {
 		System.out.println("------------------------------------------------------------------------------");
 		System.out.println("Please input an id of task you want to edit.");
 		boolean editFinished = false;
-		int taskId = 0;
 		while (!editFinished) {
 			String idStr = commandParser.readCommand();
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
-				taskId = Integer.parseInt(idStr);
-				if (currentTasks.containTask(taskId)) {
-					task = currentTasks.getTaskById(taskId);
-					printSelectedTask(taskId);
+				taskIndexToBeUpdated = Integer.parseInt(idStr);
+				if (currentTasks.containTask(taskIndexToBeUpdated)) {
+					printSelectedTask(taskIndexToBeUpdated);
 					getEditTaskItems();
 					editFinished = true;
 				}
@@ -355,6 +359,7 @@ public class ToDolyMainEntry {
 		boolean isStatus = false;
 		Date dueDate = new Date();
 		String status = "";
+		task = new Task();
 		while (!isDate) {
 			System.out.println("DueDate(DD--MM-YYYY):");
 			String dueDateStr = commandParser.readCommand();

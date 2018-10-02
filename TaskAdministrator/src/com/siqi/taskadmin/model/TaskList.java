@@ -3,6 +3,7 @@ package com.siqi.taskadmin.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskList {
 	private List<Task> tasksList;
@@ -15,6 +16,10 @@ public class TaskList {
 		return (ArrayList<Task>) tasksList;
 	}
 
+	public void setTasks(ArrayList<Task> tasksList) {
+		this.tasksList = tasksList;
+	}
+
 	public void addTask(Task task) {
 		tasksList.add(task);
 	}
@@ -24,15 +29,6 @@ public class TaskList {
 			return tasksList.get(taskId - 1);
 		}
 		return null;
-	}
-
-	public void updateTask(Task task) {
-		if (tasksList.contains(task)) {
-			tasksList.set(tasksList.indexOf(task), task);
-		} else {
-			System.out.println("Task does not exist!");
-		}
-
 	}
 
 	public void removeTask(Task task) {
@@ -72,15 +68,9 @@ public class TaskList {
 	public TaskList getTasksFilterByProject(String projectName) {
 		TaskList filteredTasks = new TaskList();
 		getTasksSortByDate();
-		for (Task task : tasksList) {
-			if (task.getProject().equals(projectName)) {
-				filteredTasks.getTasks().add(task);
-			}
-		}
-//		ArrayList<Task> filteredTasksList = 
-//		tasks.getTasks().stream().filter(t -> t.getProject().
-//		equals(projectName)).collect(Collectors.toCollection(ArrayList::new));
-//		filteredTasks.setTasks(filteredTasksList);
+		ArrayList<Task> filteredTasksList = tasksList.stream().filter(t -> t.getProject().equals(projectName))
+				.collect(Collectors.toCollection(ArrayList::new));
+		filteredTasks.setTasks(filteredTasksList);
 		return filteredTasks;
 	}
 
