@@ -73,7 +73,7 @@ public class ToDolyMainEntry {
 	/**
 	 * Given a command, process the command.
 	 * 
-	 * @param command word to be processed.
+	 * @param commandWord to be processed.
 	 * @return true if the command is a valid command, false otherwise.
 	 */
 	public boolean processCommand(CommandWord commandWord) {
@@ -311,7 +311,11 @@ public class ToDolyMainEntry {
 		}
 
 	}
-
+	
+	/**
+	 * Print id and title of the task according to the task id.
+	 * @param Id of task needs to be printed.
+	 */
 	private void printSelectedTask(int taskId) {
 		task = currentTasks.getTaskById(taskId);
 		if (task != null) {
