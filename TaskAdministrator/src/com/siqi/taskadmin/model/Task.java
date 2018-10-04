@@ -29,6 +29,8 @@ public class Task {
 	}
 
 	/**
+	 * Return a string which represents title of the task.
+	 * 
 	 * @return The title of the task. if the task is empty, return null
 	 */
 	public String getTitle() {
@@ -45,6 +47,8 @@ public class Task {
 	}
 
 	/**
+	 * Return a Date which represents the dealine of the task
+	 * 
 	 * @return The deadline of the task. if the deadline is empty, return null
 	 */
 	public Date getDuedate() {
@@ -61,6 +65,8 @@ public class Task {
 	}
 
 	/**
+	 * Return a string which represents the project name of the task.
+	 * 
 	 * @return The project name of the task. if the project name is empty, return
 	 *         null
 	 */
@@ -78,6 +84,8 @@ public class Task {
 	}
 
 	/**
+	 * Return a boolean variable which represents the status of the task.
+	 * 
 	 * @return The status of the task. default status is false(in progress)
 	 */
 	public boolean getStatus() {
@@ -94,15 +102,13 @@ public class Task {
 		this.status = status;
 	}
 
-	 /**
-	  * Override toString method.
-	  * Return a detailed description of the task in the form:
-	  *     Task title: title
-	  *     Duedate: 20-12-2018
-	  *     Project name: project
-	  *     Status: completed
-	  * @return A long and detailed description of this room
-	  */
+	/**
+	 * Override toString method. Return a detailed description of the task in the
+	 * form: Task title: title Duedate: 20-12-2018 Project name: project Status:
+	 * completed
+	 * 
+	 * @return A long and detailed description of this room
+	 */
 	@Override
 	public String toString() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");// set output format of duedate.
