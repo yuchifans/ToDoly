@@ -21,7 +21,7 @@ public class CommandMenu {
 
 	public CommandMenu() {
 		commandMenu = new HashMap<>();
-		
+
 		commandMenu.put(1, CommandWord.SHOW);
 		CommandWord.SHOW.getChildCommandWords().clear();
 		CommandWord.SHOW.addChildCommand(CommandWord.BYDATE);
@@ -45,9 +45,9 @@ public class CommandMenu {
 	}
 
 	/**
-	 * Find the CommandWord associated with a command word.
+	 * Find the CommandWord associated with a index.
 	 * 
-	 * @param commandWord The word to look up.
+	 * @param commandIndex The index of commandWord to look up.
 	 * @return The CommandWord correspondng to commandWord, or UNKNOWN if it is not
 	 *         a valid command word.
 	 */
@@ -78,17 +78,16 @@ public class CommandMenu {
 
 	public void printChildMenu(CommandWord commandWord) {
 		System.out.println("Pick an option:");
-		HashMap<Integer,CommandWord> childMenu= commandWord.getChildCommandWords();
+		HashMap<Integer, CommandWord> childMenu = commandWord.getChildCommandWords();
 		for (int commandIndex : childMenu.keySet()) {
 			System.out.println("(" + commandIndex + ") " + childMenu.get(commandIndex).toString());
 		}
-		System.out.println("Hint: Just input a number of from 1 to "+ childMenu.size());
+		System.out.println("Hint: Just input a number of from 1 to " + childMenu.size());
 	}
-	
+
 	public void printSingleCommand(CommandWord commandWord) {
 		System.out.println("Pick an option:");
-		System.out.println("(1) "+commandWord.toString());
+		System.out.println("(1) " + commandWord.toString());
 	}
-	
 
 }

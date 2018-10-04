@@ -47,7 +47,7 @@ public class TaskList {
 		System.out.println("Task Detail:");
 		for (Task task : tasksList) {
 			System.out.println("***************************************** ");
-			System.out.println(" taskId:" + (tasksList.indexOf(task) + 1) + "\r" + task.getDetail());
+			System.out.println(" taskId:" + (tasksList.indexOf(task) + 1) + "\r" + task.toString());
 		}
 	}
 
@@ -62,7 +62,7 @@ public class TaskList {
 	}
 
 	public void getTasksSortByDate() {
-		tasksList.sort(Comparator.comparing(Task::isStatus).thenComparing(Task::getDuedate));
+		tasksList.sort(Comparator.comparing(Task::getStatus).thenComparing(Task::getDuedate));
 	}
 
 	public TaskList getTasksFilterByProject(String projectName) {
@@ -77,7 +77,7 @@ public class TaskList {
 	public int[] getNumberOfTasksByStatus() {
 		int[] taskNumber = new int[2];
 		for (Task task : tasksList) {
-			if (task.isStatus() == false) {
+			if (task.getStatus() == false) {
 				taskNumber[0]++;
 			} else {
 				taskNumber[1]++;

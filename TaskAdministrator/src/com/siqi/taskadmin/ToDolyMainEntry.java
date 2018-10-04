@@ -1,5 +1,14 @@
 package com.siqi.taskadmin;
 
+import java.util.Date;
+import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.menu.CommandWord;
+import com.siqi.taskadmin.parser.CommandParser;
+import com.siqi.taskadmin.util.DataUtil;
+import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.model.Task;
+import com.siqi.taskadmin.model.TaskList;
+
 /**
  *  This class is the main class of the "Toduly" application. 
  *  The application will allow a user to create new tasks, assign them a title and due date, and 
@@ -14,17 +23,8 @@ package com.siqi.taskadmin;
  *  command parser.  It also evaluates and executes the commands that the parser returns.
  * 
  * @author  Siqi Qian
- * @version 2018.09.28 
+ * @version 2018.10.04 
  */
-
-import java.util.Date;
-import com.siqi.taskadmin.menu.CommandMenu;
-import com.siqi.taskadmin.menu.CommandWord;
-import com.siqi.taskadmin.parser.CommandParser;
-import com.siqi.taskadmin.util.DataUtil;
-import com.siqi.taskadmin.data.TaskDataProcessor;
-import com.siqi.taskadmin.model.Task;
-import com.siqi.taskadmin.model.TaskList;
 
 public class ToDolyMainEntry {
 
@@ -73,7 +73,7 @@ public class ToDolyMainEntry {
 	/**
 	 * Given a command, process the command.
 	 * 
-	 * @param commandWord to be processed.
+	 * @param commandWord Command word to be processed.
 	 * @return true if the command is a valid command, false otherwise.
 	 */
 	public boolean processCommand(CommandWord commandWord) {
@@ -234,14 +234,37 @@ public class ToDolyMainEntry {
 	}
 
 	/**
-	 * "Quit and save" option was choosed. Save all the changes and print welfare
-	 * information.
+	 * This class is used to get the concrete items of a new task including
+	 * tasktitle, duedate and project.
 	 */
-	private void quit() {
-
-		taskDataProcessor.write(tasks);
-		System.out.println("Thank you for using ToDoly.  Good bye.");
-
+	private void getAddTaskItems() {
+		boolean isDate = false;
+		boolean isEmpty = true;
+		String taskTitle = "";
+		Date dueDate = new Date();
+		task = new Task();
+		// Judge if the title of a new task is empty.
+		while (isEmpty) {
+			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
+			taskTitle = commandParser.readCommand();
+			if (taskTitle != null && !taskTitle.equals("")) {
+				isEmpty = false;
+			}
+		}
+		// Judge if the dudate of a new task is in correct format
+		while (!isDate) {
+			System.out.println("DueDate(DD--MM-YYYY):");
+			String dueDateStr = commandParser.readCommand();
+			dueDate = DataUtil.createDate(dueDateStr);
+			if (dueDate != null) {
+				isDate = true;
+			}
+		}
+		System.out.println("Project Name: ");
+		String projectName = commandParser.readCommand();
+		task.setTitle(taskTitle);
+		task.setDuedate(dueDate);
+		task.setProject(projectName);
 	}
 
 	/**
@@ -266,7 +289,7 @@ public class ToDolyMainEntry {
 		if (tasks.getTasks().contains(taskToBeUpated)) {
 			taskToBeUpated.setDuedate(task.getDuedate());
 			taskToBeUpated.setProject(task.getProject());
-			taskToBeUpated.setStatus(task.isStatus());
+			taskToBeUpated.setStatus(task.getStatus());
 			System.out.println("The task has been updated.");
 		} else {
 			System.out.println("Task has not been found.");
@@ -309,11 +332,49 @@ public class ToDolyMainEntry {
 			CommandWord commandWord = commandParser.getChildMenuCommand(CommandWord.EDIT);
 			finished = processCommand(commandWord);
 		}
-
 	}
-	
+
+	/**
+	 * This class is used to get the concrete items inluding tasktitle, duedate,
+	 * project and status of a task from user, these items are used to update the
+	 * existing task which user choosed.
+	 */
+	private void getEditTaskItems() {
+		boolean isDate = false;
+		boolean isStatus = false;
+		Date dueDate = new Date();
+		String status = "";
+		task = new Task();
+		// Judge if the dudate which user typed in is in correct format
+		while (!isDate) {
+			System.out.println("DueDate(DD--MM-YYYY):");
+			String dueDateStr = commandParser.readCommand();
+			dueDate = DataUtil.createDate(dueDateStr);
+			if (dueDate != null) {
+				isDate = true;
+			}
+		}
+		System.out.println("Project Name: ");
+		String projectName = commandParser.readCommand();
+		// Judge if the staus of which user typed in is 1 or 0;
+		while (!isStatus) {
+			System.out.println("Task Status(0:In progress; 1:Completed): ");
+			status = commandParser.readCommand();
+			isStatus = DataUtil.isStatus(status);
+		}
+		task.setDuedate(dueDate);
+		task.setProject(projectName);
+		// status: (true=1:Completed , false=0:In progress)
+		if (status.equals("1")) {
+			task.setStatus(true);
+		} else {
+			task.setStatus(false);
+		}
+	}
+
 	/**
 	 * Print id and title of the task according to the task id.
+	 * 
 	 * @param Id of task needs to be printed.
 	 */
 	private void printSelectedTask(int taskId) {
@@ -324,6 +385,14 @@ public class ToDolyMainEntry {
 		}
 	}
 
+	/**
+	 * "Remove" option is choosed by user after system displays the tasklist. Loops
+	 * until a proper index of task to be edited has been got. Judge whether the
+	 * task selected is in the current task list was displayed. If true, remove the
+	 * task from task list and give user a successful notification, give user a
+	 * failure notification otherwise. Loops until the proper id of task has been
+	 * got.
+	 */
 	private void remove() {
 		System.out.println("------------------------------------------------------------------------------");
 		System.out.println("Please input an id of task you want to remove.");
@@ -331,8 +400,11 @@ public class ToDolyMainEntry {
 		int taskId = 0;
 		while (!finished) {
 			String idStr = commandParser.readCommand();
+			// Judge whether user types in is an integer
 			if (!idStr.equals("") && DataUtil.isInteger(idStr)) {
 				taskId = Integer.parseInt(idStr);
+				// Judge if task which user chooses is in the current task list which was
+				// displayed.
 				if (currentTasks.containTask(taskId)) {
 					tasks.removeTask(currentTasks.getTaskById(taskId));
 					System.out.println("The task has been removed");
@@ -345,64 +417,17 @@ public class ToDolyMainEntry {
 		}
 	}
 
-	private void getAddTaskItems() {
-		boolean isDate = false;
-		boolean isEmpty = true;
-		String taskTitle = "";
-		Date dueDate = new Date();
-		task = new Task();
-		while (isEmpty) {
-			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
-			taskTitle = commandParser.readCommand();
-			if (taskTitle != null && !taskTitle.equals("")) {
-				isEmpty = false;
-			}
-		}
-		while (!isDate) {
-			System.out.println("DueDate(DD--MM-YYYY):");
-			String dueDateStr = commandParser.readCommand();
-			dueDate = DataUtil.createDate(dueDateStr);
-			if (dueDate != null) {
-				isDate = true;
-			}
-		}
-		System.out.println("Project Name: ");
-		String projectName = commandParser.readCommand();
-		task.setTitle(taskTitle);
-		task.setDuedate(dueDate);
-		task.setProject(projectName);
-	}
+	/**
+	 * "Quit and save" option was choosed. Save all the changes and print welfare
+	 * information.
+	 */
+	private void quit() {
 
-	private void getEditTaskItems() {
-		boolean isDate = false;
-		boolean isStatus = false;
-		Date dueDate = new Date();
-		String status = "";
-		task = new Task();
-		while (!isDate) {
-			System.out.println("DueDate(DD--MM-YYYY):");
-			String dueDateStr = commandParser.readCommand();
-			dueDate = DataUtil.createDate(dueDateStr);
-			if (dueDate != null) {
-				isDate = true;
-			}
-		}
-		System.out.println("Project Name: ");
-		String projectName = commandParser.readCommand();
-		while (!isStatus) {
-			System.out.println("Task Status(0:In progress; 1:Completed): ");
-			status = commandParser.readCommand();
-			isStatus = DataUtil.isStatus(status);
-		}
-		task.setDuedate(dueDate);
-		task.setProject(projectName);
-		if (status.equals("1")) {
-			task.setStatus(true);
-		} else {
-			task.setStatus(false);
-		}
-	}
+		taskDataProcessor.write(tasks);
+		System.out.println("Thank you for using ToDoly.  Good bye.");
 
+	}
+	
 	public static void main(String[] args) {
 		ToDolyMainEntry mainEntry = new ToDolyMainEntry();
 		mainEntry.start();

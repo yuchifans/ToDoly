@@ -125,7 +125,7 @@ public class TaskDataProcessor {
 					member.put("title", task.getTitle());
 					member.put("dueDate", DataUtil.dateToString(task.getDuedate()));
 					member.put("projectName", task.getProject());
-					member.put("status", task.isStatus() == true ? "1" : "0");
+					member.put("status", task.getStatus() == true ? "1" : "0");
 					jsonMembers.put(member);
 
 				} catch (JSONException e) {
