@@ -1,27 +1,24 @@
-/**
- * 
- */
+
 package com.siqi.taskadmin.menu;
 
 import java.util.HashMap;
 
-/**
- * This class is part of the "ToDoly" application. "ToDoly" is a small
- * application which is used to administrate all the tasks owned by user.
- * 
- * This class holds an enumeration of all command menu known to the application.
- * It is used to recognise commands as they are typed in.
- *
- * @author Siqi Qian
- * @version 2018.09.13
- */
 public class CommandMenu {
 
 	private HashMap<Integer, CommandWord> commandMenu;
 
+	/**
+	 * Constructor. Create a menu of CommandWord in a tree structure. Top menu is
+	 * "Show all tasks(By date or project)", "Add new task", and "Quit and save".
+	 * Child menu of "Show all tasks(By date or project)" is "By date" and "By
+	 * project". Child menu of "By date" is "Remove task", "Edit task" and "Return".
+	 * Child menu of "By project" is "Remove task", "Edit task" and "Return". Child
+	 * menu of "Edit task" is "Save and return" and "Quit and return". Child menu of
+	 * "Add new task" is "Save and return" and "Quit and return".
+	 */
 	public CommandMenu() {
-		commandMenu = new HashMap<>();
 
+		commandMenu = new HashMap<>();
 		commandMenu.put(1, CommandWord.SHOW);
 		CommandWord.SHOW.getChildCommandWords().clear();
 		CommandWord.SHOW.addChildCommand(CommandWord.BYDATE);
@@ -45,10 +42,10 @@ public class CommandMenu {
 	}
 
 	/**
-	 * Find the CommandWord associated with a index.
+	 * Find the CommandWord in the top menu associated with a index.
 	 * 
 	 * @param commandIndex The index of commandWord to look up.
-	 * @return The CommandWord correspondng to commandWord, or UNKNOWN if it is not
+	 * @return The CommandWord correspondng to commandIndex, or UNKNOWN if it is not
 	 *         a valid command word.
 	 */
 	public CommandWord getCommandWord(int commandIndex) {
@@ -59,15 +56,9 @@ public class CommandMenu {
 		}
 	}
 
-	public HashMap<Integer, CommandWord> getCommandMenu() {
-		return commandMenu;
-	}
-
-	public void addCommandToMenu(CommandWord commandword) {
-		int commandKey = commandMenu.size() + 1;
-		commandMenu.put(commandKey, commandword);
-	}
-
+	/**
+	 * Print out the top menu.
+	 */
 	public void printTopMenu() {
 		System.out.println("Pick an option:");
 		for (int commandIndex : commandMenu.keySet()) {
@@ -76,18 +67,17 @@ public class CommandMenu {
 		System.out.println("Hint: Just input a number from 1 to " + commandMenu.size());
 	}
 
-	public void printChildMenu(CommandWord commandWord) {
+	/**
+	 * Print out the child menu corresponding to a parent CommandWord.
+	 * @param parentCommandWord a parentCommandWord whose child commands to be printed
+	 */
+	public void printChildMenu(CommandWord parentCommandWord) {
 		System.out.println("Pick an option:");
-		HashMap<Integer, CommandWord> childMenu = commandWord.getChildCommandWords();
+		HashMap<Integer, CommandWord> childMenu = parentCommandWord.getChildCommandWords();
 		for (int commandIndex : childMenu.keySet()) {
 			System.out.println("(" + commandIndex + ") " + childMenu.get(commandIndex).toString());
 		}
 		System.out.println("Hint: Just input a number of from 1 to " + childMenu.size());
-	}
-
-	public void printSingleCommand(CommandWord commandWord) {
-		System.out.println("Pick an option:");
-		System.out.println("(1) " + commandWord.toString());
 	}
 
 }

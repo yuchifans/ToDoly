@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Class Task-a task can be operated in this application.
+ * Class Task-a task can be operated in "ToDoLy".
  * 
- * This class is a basic model of "ToDoly" application. "Todoly" is a simple
+ * This class is a basic model of "ToDoLy" application. "TodoLy" is a simple
  * task administration system.
  * 
  * A "Task" have items of title, due date, project name and status.
@@ -40,7 +40,7 @@ public class Task {
 	/**
 	 * Define a title of this task.
 	 * 
-	 * @param title The title of the exit.
+	 * @param title The title of the task.
 	 */
 	public void setTitle(String title) {
 		this.title = title;

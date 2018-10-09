@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"com.siqi.taskadmin"},{"l":"com.siqi.taskadmin.data"},{"l":"com.siqi.taskadmin.menu"},{"l":"com.siqi.taskadmin.model"},{"l":"com.siqi.taskadmin.parser"},{"l":"com.siqi.taskadmin.util"}]
+packageSearchIndex = [{"l":"com.siqi.taskadmin"},{"l":"com.siqi.taskadmin.data"},{"l":"com.siqi.taskadmin.menu"},{"l":"com.siqi.taskadmin.model"},{"l":"com.siqi.taskadmin.parser"},{"l":"com.siqi.taskadmin.test"},{"l":"com.siqi.taskadmin.util"}]

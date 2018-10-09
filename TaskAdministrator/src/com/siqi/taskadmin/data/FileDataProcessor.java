@@ -3,14 +3,12 @@ package com.siqi.taskadmin.data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,65 +16,77 @@ import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.TaskList;
 import com.siqi.taskadmin.util.DataUtil;
 
-public class TaskDataProcessor {
-	private int biggestId;
-	private File file;
-	private JSONObject json;
-	private JSONArray jsonMembers;
-	private FileReader fr;
-	private BufferedReader br;
-	private StringBuilder jsonStr;
-	private TaskList tasks;
+/**
+ * Class FileDataProcessor-a processor which is used to read data of tasklist
+ * from a file and write the data of tasklist into the certain file. JSON is
+ * used as startard model to transmit the data.
+ * 
+ * This "FileDataProcessor" contains four behaviours of getFile, load, read and
+ * write.
+ * 
+ * @author Siqi Qian
+ * @version 2018.10.05
+ */
 
-	public TaskDataProcessor() {
-		jsonStr = new StringBuilder();
+public class FileDataProcessor {
+	static private JSONObject json;
+	static private JSONArray jsonMembers;
+
+	public FileDataProcessor() {
 		json = new JSONObject();
 		jsonMembers = new JSONArray();
-		biggestId = 0;
-		tasks = new TaskList();
 	}
 
-	private boolean getFile() {
-		file = new File("TasksDetails.txt");
+	/**
+	 * Try to get a file of "TasksDetails.txt", if it does not exit, create a new
+	 * file by using the same name.
+	 */
+	private static File getFile() {
+		File file = new File("TasksDetails.txt");
 		if (file.exists()) {
-			return true;
+			return file;
 		} else {
 			try {
 				file.createNewFile();
+				return file;
 			} catch (IOException e) {
 				e.printStackTrace();
-				return false;
+				return null;
 			}
-			return true;
 		}
 	}
 
-	private void load() {
-		if (getFile()) {
-			try {
-				fr = new FileReader(file);
-				br = new BufferedReader(fr);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+	/**
+	 * Try to load the file data and use a string to catch all the data from the
+	 * file, then cast the string to a JsonObject. Obtain the JsonArray of task by
+	 * parsing the JsonObject by using key of "tasks".
+	 */
+	private static void load() {
+		if (getFile() != null) {
+			File file = getFile();
+			StringBuilder jsonStr = new StringBuilder();
 			String temp = "";
+			BufferedReader br = null;
 			try {
+				FileReader fr = new FileReader(file);
+				br = new BufferedReader(fr);
 				while ((temp = br.readLine()) != null) {
 					jsonStr.append(temp);
 				}
-				fr.close();
-				br.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			if (!jsonStr.toString().equals("")) {
 				try {
 					json = new JSONObject(jsonStr.toString());
 					if (json.has("tasks")) {
 						jsonMembers = json.getJSONArray("tasks");
-					}
-					if (json.has("biggestID")) {
-						biggestId = json.getInt("biggestID");
 					}
 				} catch (JSONException ex) {
 					ex.printStackTrace();
@@ -85,9 +95,16 @@ public class TaskDataProcessor {
 		}
 	}
 
-	public TaskList read() {
+	/**
+	 * After loading, loops in the JsonArray to get the all the tasks one by one.
+	 * All the tasks are stored in a object of "TaskList" and it will be returned at
+	 * last.
+	 * 
+	 * @return TaskList a tasklist obtained from the file.
+	 */
+	public static TaskList read() {
 		load();
-		tasks = new TaskList();
+		TaskList tasks = new TaskList();
 		for (int i = 0; i < jsonMembers.length(); i++) {
 			JSONObject taskJson = new JSONObject();
 			try {
@@ -115,8 +132,14 @@ public class TaskDataProcessor {
 		return tasks;
 	}
 
-	public void write(TaskList tasks) {
-		getFile();
+	/**
+	 * Transform each "Task" of "TaskList" to JsonObject and combine all the "Task"s
+	 * into JsonArray. Put the JsonArray into a JsonObject and cast it to a string.
+	 * Write the string to the certain file finally.
+	 * 
+	 * @param tasks a tasklist need to be saved in the file.
+	 */
+	public static void write(TaskList tasks) {
 		jsonMembers = new JSONArray();
 		if (tasks.getNumberOfTasks() != 0) {
 			for (Task task : tasks.getTasks()) {
@@ -137,25 +160,16 @@ public class TaskDataProcessor {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-		} else {
-			try {
-				json.put("biggestID", 0);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 		}
 		String jsonStr = json.toString();
 		try {
+			File file = getFile();
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			writer.write(jsonStr);
 			writer.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	public int getCurrentId() {
-		return biggestId;
 	}
 
 }

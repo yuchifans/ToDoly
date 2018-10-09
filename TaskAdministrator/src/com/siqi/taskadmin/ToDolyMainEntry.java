@@ -5,25 +5,28 @@ import com.siqi.taskadmin.menu.CommandMenu;
 import com.siqi.taskadmin.menu.CommandWord;
 import com.siqi.taskadmin.parser.CommandParser;
 import com.siqi.taskadmin.util.DataUtil;
-import com.siqi.taskadmin.data.TaskDataProcessor;
+import com.siqi.taskadmin.data.FileDataProcessor;
 import com.siqi.taskadmin.model.Task;
 import com.siqi.taskadmin.model.TaskList;
 
 /**
- *  This class is the main class of the "Toduly" application. 
- *  The application will allow a user to create new tasks, assign them a title and due date, and 
- *  choose a project for that task to belong to. They will need to use a text based user interface 
- *  via the command-line. By using the application, the user is able to also edit, mark as done or 
- *  remove tasks. They can also quit and save the current task list to file, and then restart the 
- *  application with the former state restored.
+ * This class is the main class of the "Toduly" application. The application
+ * will allow a user to create new tasks, assign them a title and due date, and
+ * choose a project for that task to belong to. They will need to use a text
+ * based user interface via the command-line. By using the application, the user
+ * is able to also edit, mark as done or remove tasks. They can also quit and
+ * save the current task list to file, and then restart the application with the
+ * former state restored.
  * 
- *  To use this system, create an instance of this class and call the "start" method.
+ * To use this system, create an instance of this class and call the "start"
+ * method.
  * 
- *  This main class creates and initialises all the others: it creates taskadmin, command menu and 
- *  command parser.  It also evaluates and executes the commands that the parser returns.
+ * This main class creates and initialises all the others: it creates taskadmin,
+ * command menu and command parser. It also evaluates and executes the commands
+ * that the parser returns.
  * 
- * @author  Siqi Qian
- * @version 2018.10.04 
+ * @author Siqi Qian
+ * @version 2018.10.04
  */
 
 public class ToDolyMainEntry {
@@ -31,10 +34,9 @@ public class ToDolyMainEntry {
 	private CommandParser commandParser;
 	private CommandMenu menu;
 	private TaskList tasks;
-	private TaskDataProcessor taskDataProcessor;
 	private TaskList currentTasks;
 	private Task task;
-	private int[] tasksNumberBystatus;
+	private int[] tasksNumberByStatus;
 	private int taskIndexToBeUpdated;
 
 	/**
@@ -48,9 +50,8 @@ public class ToDolyMainEntry {
 		tasks = new TaskList();
 		task = new Task();
 		currentTasks = new TaskList();
-		taskDataProcessor = new TaskDataProcessor();
-		tasks = taskDataProcessor.read();
-		tasksNumberBystatus = new int[2];
+		tasks = FileDataProcessor.read();
+		tasksNumberByStatus = new int[2];
 
 	}
 
@@ -76,7 +77,7 @@ public class ToDolyMainEntry {
 	 * @param commandWord Command word to be processed.
 	 * @return true if the command is a valid command, false otherwise.
 	 */
-	public boolean processCommand(CommandWord commandWord) {
+	private boolean processCommand(CommandWord commandWord) {
 		boolean wantToQuit = false;
 		switch (commandWord) {
 		case UNKNOWN:
@@ -144,9 +145,9 @@ public class ToDolyMainEntry {
 
 		System.out.println();
 		System.out.println("Welcome to ToDoly!");
-		tasksNumberBystatus = tasks.getNumberOfTasksByStatus(); // Get two numbers of in-porgress tasks and done tasks .
+		tasksNumberByStatus = tasks.getNumberOfTasksByStatus(); // Get two numbers of in-porgress tasks and done tasks .
 		System.out.println(
-				"You have " + tasksNumberBystatus[0] + " tasks todo and " + tasksNumberBystatus[1] + " tasks done.");
+				"You have " + tasksNumberByStatus[0] + " tasks todo and " + tasksNumberByStatus[1] + " tasks done.");
 		menu.printTopMenu();
 
 	}
@@ -245,9 +246,9 @@ public class ToDolyMainEntry {
 		task = new Task();
 		// Judge if the title of a new task is empty.
 		while (isEmpty) {
-			System.out.println("TaskTitle(TaskTitle cannot be modified once created.):");
+			System.out.println("TaskTitle(Task title cannot be empty and is unable to be modified once created.):");
 			taskTitle = commandParser.readCommand();
-			if (taskTitle != null && !taskTitle.equals("")) {
+			if (taskTitle != null && !taskTitle.trim().equals("")) {
 				isEmpty = false;
 			}
 		}
@@ -275,25 +276,6 @@ public class ToDolyMainEntry {
 
 		tasks.addTask(task);
 		System.out.println("The task has been added.");
-
-	}
-
-	/**
-	 * "Save and return" option is choosed after editing a specific task. Update a
-	 * task in the task list temporarily. The change of "update" operation has not
-	 * been saved to the file.
-	 */
-	private void temporaryUpate() {
-
-		Task taskToBeUpated = currentTasks.getTaskById(taskIndexToBeUpdated);
-		if (tasks.getTasks().contains(taskToBeUpated)) {
-			taskToBeUpated.setDuedate(task.getDuedate());
-			taskToBeUpated.setProject(task.getProject());
-			taskToBeUpated.setStatus(task.getStatus());
-			System.out.println("The task has been updated.");
-		} else {
-			System.out.println("Task has not been found.");
-		}
 
 	}
 
@@ -386,6 +368,25 @@ public class ToDolyMainEntry {
 	}
 
 	/**
+	 * "Save and return" option is choosed after editing a specific task. Update a
+	 * task in the task list temporarily. The change of "update" operation has not
+	 * been saved to the file.
+	 */
+	private void temporaryUpate() {
+
+		Task taskToBeUpated = currentTasks.getTaskById(taskIndexToBeUpdated);
+		if (tasks.getTasks().contains(taskToBeUpated)) {
+			taskToBeUpated.setDuedate(task.getDuedate());
+			taskToBeUpated.setProject(task.getProject());
+			taskToBeUpated.setStatus(task.getStatus());
+			System.out.println("The task has been updated.");
+		} else {
+			System.out.println("Task has not been found.");
+		}
+
+	}
+
+	/**
 	 * "Remove" option is choosed by user after system displays the tasklist. Loops
 	 * until a proper index of task to be edited has been got. Judge whether the
 	 * task selected is in the current task list was displayed. If true, remove the
@@ -423,11 +424,11 @@ public class ToDolyMainEntry {
 	 */
 	private void quit() {
 
-		taskDataProcessor.write(tasks);
+		FileDataProcessor.write(tasks);
 		System.out.println("Thank you for using ToDoly.  Good bye.");
 
 	}
-	
+
 	public static void main(String[] args) {
 		ToDolyMainEntry mainEntry = new ToDolyMainEntry();
 		mainEntry.start();
