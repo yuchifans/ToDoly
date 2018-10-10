@@ -1,6 +1,5 @@
 package com.siqi.taskadmin.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -102,18 +101,4 @@ public class Task {
 		this.status = status;
 	}
 
-	/**
-	 * Override toString method. Return a detailed description of the task in the
-	 * form: Task title: title Duedate: 20-12-2018 Project name: project Status:
-	 * completed
-	 * 
-	 * @return A long and detailed description of this room
-	 */
-	@Override
-	public String toString() {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");// set output format of duedate.
-		return " Task title:" + title + "\r Duedate:" + formatter.format(dueDate) + "\r Project name:" + projectName
-				+ "\r Status:" + (status == true ? "completed \r" : "in progress \r")
-				+ "*****************************************";
-	}
 }

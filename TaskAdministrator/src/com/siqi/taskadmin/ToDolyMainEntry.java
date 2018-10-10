@@ -240,16 +240,24 @@ public class ToDolyMainEntry {
 	 */
 	private void getAddTaskItems() {
 		boolean isDate = false;
-		boolean isEmpty = true;
+		boolean titleValid = false;
+		boolean projectValid = false;
 		String taskTitle = "";
 		Date dueDate = new Date();
+		String projectName = "";
 		task = new Task();
-		// Judge if the title of a new task is empty.
-		while (isEmpty) {
-			System.out.println("TaskTitle(Task title cannot be empty and is unable to be modified once created.):");
+		System.out.println("Task title(Task title is unable to be modified once created.):");
+		// Judge if the title of a new task is empty and no more than 16 characters.
+		while (!titleValid) {
 			taskTitle = commandParser.readCommand();
 			if (taskTitle != null && !taskTitle.trim().equals("")) {
-				isEmpty = false;
+				if (taskTitle.length() <= 16) {
+					titleValid = true;
+				} else {
+					System.out.println("Task title cannot be more than 16 characters!");
+				}
+			} else {
+				System.out.println("Task title cannot be empty");
 			}
 		}
 		// Judge if the dudate of a new task is in correct format
@@ -262,7 +270,15 @@ public class ToDolyMainEntry {
 			}
 		}
 		System.out.println("Project Name: ");
-		String projectName = commandParser.readCommand();
+		// Judge if the project name which user typed in is no more than 30 characters.
+		while (!projectValid) {
+			projectName = commandParser.readCommand();
+			if (projectName.length() <= 30) {
+				projectValid = true;
+			} else {
+				System.out.println("Project name cannot be more than 30 characters!");
+			}
+		}
 		task.setTitle(taskTitle);
 		task.setDuedate(dueDate);
 		task.setProject(projectName);
@@ -324,7 +340,9 @@ public class ToDolyMainEntry {
 	private void getEditTaskItems() {
 		boolean isDate = false;
 		boolean isStatus = false;
+		boolean projectValid = false;
 		Date dueDate = new Date();
+		String projectName = "";
 		String status = "";
 		task = new Task();
 		// Judge if the dudate which user typed in is in correct format
@@ -337,7 +355,15 @@ public class ToDolyMainEntry {
 			}
 		}
 		System.out.println("Project Name: ");
-		String projectName = commandParser.readCommand();
+		// Judge if the project name which user typed in is no more than 30 characters.
+		while (!projectValid) {
+			projectName = commandParser.readCommand();
+			if (projectName.length() <= 30) {
+				projectValid = true;
+			} else {
+				System.out.println("Project name cannot be more than 30 characters!");
+			}
+		}
 		// Judge if the staus of which user typed in is 1 or 0;
 		while (!isStatus) {
 			System.out.println("Task Status(0:In progress; 1:Completed): ");

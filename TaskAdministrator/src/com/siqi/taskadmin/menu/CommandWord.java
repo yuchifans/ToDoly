@@ -68,5 +68,13 @@ public enum CommandWord {
 			return CommandWord.UNKNOWN;
 		}
 	}
+	
+	@Override
+	/**
+     * @return The command word as a string.
+     */
+	public String toString() {
+		return commandString;
+	}
 
 }

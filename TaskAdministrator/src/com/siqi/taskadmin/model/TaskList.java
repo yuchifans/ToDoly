@@ -1,5 +1,6 @@
 package com.siqi.taskadmin.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -89,11 +90,21 @@ public class TaskList {
 	 * Show the full list of tasks in the collection.
 	 */
 	public void showAllTasks() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		System.out.println("Task Detail:");
+		String AlignFormat = "| %-11d | %-16s |%-18s |%-30s |%-16s |%n";
+		System.out.format(
+				"+-------------+------------------+-------------------+-------------------------------+-----------------+%n");
+		System.out.format(
+				"| Task Index  |      Title       |      Duedate      |             Project           |      Status     |%n");
+		System.out.format(
+				"+-------------+------------------+-------------------+-------------------------------+-----------------+%n");
 		for (Task task : tasksList) {
-			System.out.println("***************************************** ");
-			System.out.println(" taskId:" + (tasksList.indexOf(task) + 1) + "\r" + task.toString());
+			System.out.format(AlignFormat, (tasksList.indexOf(task) + 1), task.getTitle(),
+					formatter.format(task.getDuedate()), task.getProject(), task.getStatus()==true?"Completed":"In progress");
+			 System.out.format("+-------------+------------------+-------------------+-------------------------------+-----------------+%n");
 		}
+		
 	}
 
 	/**

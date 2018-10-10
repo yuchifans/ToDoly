@@ -1,9 +1,12 @@
 package com.siqi.taskadmin.test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -13,8 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import com.siqi.taskadmin.util.DataUtil;
 import com.siqi.taskadmin.model.Task;
-
-
 
 /**
  * This class is unit test class for the "ToDoLy" application
@@ -56,7 +57,7 @@ class Junit5Test {
 	void dataUtilUnitTest() {
 		assertEquals("12-12-2012", DataUtil.dateToString(DataUtil.createDate("12-12-2012")));
 		assertEquals("01-02-0001", DataUtil.dateToString(DataUtil.createDate("1-2-1")));
-		
+
 		assertFalse(DataUtil.isInteger("a"));
 		assertTrue(DataUtil.isInteger("1"));
 		assertTrue(DataUtil.isInteger("  1"));
@@ -67,40 +68,57 @@ class Junit5Test {
 		assertTrue(DataUtil.isStatus(" 0   "));
 		assertTrue(DataUtil.isStatus(" 1    "));
 		assertFalse(DataUtil.isInteger(" 1-1 "));
-		assertFalse(DataUtil.isInteger(Integer.toString(Integer.MAX_VALUE+1)));
+		assertFalse(DataUtil.isInteger(Integer.toString(Integer.MAX_VALUE + 1)));
 		assertFalse(DataUtil.isInteger("2147483648"));
 		assertFalse(DataUtil.isStatus("2147483648"));
-		
-		
+
 	}
-	
+
 	@Test
-	public void TaskUnitTest() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		Task task =new Task();
-		Class<?> clazz=task.getClass();
-		Field titleField =clazz.getDeclaredField("title");
+	public void TaskUnitTest()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Task task = new Task();
+		Class<?> clazz = task.getClass();
+		Field titleField = clazz.getDeclaredField("title");
 		Field projectNameField = clazz.getDeclaredField("projectName");
+		Field dueDateField = clazz.getDeclaredField("dueDate");
+		Field statusField = clazz.getDeclaredField("status");
 		titleField.setAccessible(true);
 		projectNameField.setAccessible(true);
-		String title=(String)titleField.get(task);
-		String projectName=(String)projectNameField.get(task);
-		
-		
-		assertEquals(null,title);
-		assertEquals(null,projectName);
-		
+		dueDateField.setAccessible(true);
+		statusField.setAccessible(true);
+		String title = (String) titleField.get(task);
+		String projectName = (String) projectNameField.get(task);
+		Date dueDate = (Date) dueDateField.get(task);
+		boolean status = (boolean) statusField.get(task);
+
+		assertEquals(null, title);
+		assertEquals(null, projectName);
+		assertEquals(null, dueDate);
+		assertEquals(false, status);
+
 		task.setTitle("title1");
-		title =(String)titleField.get(task);
-		assertEquals("title1",title);
-		assertEquals("title1",task.getTitle());
-		
-		
+		title = (String) titleField.get(task);
+		assertEquals("title1", title);
+		assertEquals("title1", task.getTitle());
+
 		task.setProject("project1");
-		projectName =(String)projectNameField.get(task);
-		assertEquals("project1",projectName);
-		assertEquals("project1",task.getProject());
-		
-		
+		projectName = (String) projectNameField.get(task);
+		assertEquals("project1", projectName);
+		assertEquals("project1", task.getProject());
+
+		Date datetemp = DataUtil.createDate("12-12-2012");
+		task.setDuedate(datetemp);
+		assertSame(datetemp, task.getDuedate());
+		assertEquals("12-12-2012", DataUtil.dateToString(task.getDuedate()));
+
+		task.setStatus(true);
+		status = (boolean) statusField.get(task);
+		assertTrue(status);
+		assertTrue(task.getStatus());
+
+		System.out.println(task.toString());
+
 	}
 
 }
