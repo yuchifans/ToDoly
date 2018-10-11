@@ -96,7 +96,7 @@ public class TaskList {
 		System.out.format(
 				"+-------------+------------------+-------------------+-------------------------------+-----------------+%n");
 		System.out.format(
-				"| Task Index  |      Title       |      Duedate      |             Project           |      Status     |%n");
+				"|    Task Id  |      Title       |      Duedate      |             Project           |      Status     |%n");
 		System.out.format(
 				"+-------------+------------------+-------------------+-------------------------------+-----------------+%n");
 		for (Task task : tasksList) {

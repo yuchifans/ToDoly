@@ -203,7 +203,6 @@ public class ToDolyMainEntry {
 		currentTasks = tasks.getTasksFilterByProject(projectName);
 		boolean finished = false;
 		if (currentTasks != null && currentTasks.getNumberOfTasks() != 0) {
-			System.out.println(currentTasks.getTasks().get(0) == tasks.getTasks().get(0));
 			currentTasks.showAllTasks();
 			menu.printChildMenu(CommandWord.BYPROJECT);
 			while (!finished) {
@@ -262,7 +261,7 @@ public class ToDolyMainEntry {
 		}
 		// Judge if the dudate of a new task is in correct format
 		while (!isDate) {
-			System.out.println("DueDate(DD--MM-YYYY):");
+			System.out.println("DueDate(DD-MM-YYYY):");
 			String dueDateStr = commandParser.readCommand();
 			dueDate = DataUtil.createDate(dueDateStr);
 			if (dueDate != null) {
@@ -347,7 +346,7 @@ public class ToDolyMainEntry {
 		task = new Task();
 		// Judge if the dudate which user typed in is in correct format
 		while (!isDate) {
-			System.out.println("DueDate(DD--MM-YYYY):");
+			System.out.println("DueDate(DD-MM-YYYY):");
 			String dueDateStr = commandParser.readCommand();
 			dueDate = DataUtil.createDate(dueDateStr);
 			if (dueDate != null) {

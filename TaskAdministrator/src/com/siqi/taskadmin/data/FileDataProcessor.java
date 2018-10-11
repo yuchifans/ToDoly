@@ -29,13 +29,9 @@ import com.siqi.taskadmin.util.DataUtil;
  */
 
 public class FileDataProcessor {
-	static private JSONObject json;
-	static private JSONArray jsonMembers;
+	static private JSONObject json= new JSONObject();
+	static private JSONArray jsonMembers=new JSONArray();
 
-	public FileDataProcessor() {
-		json = new JSONObject();
-		jsonMembers = new JSONArray();
-	}
 
 	/**
 	 * Try to get a file of "TasksDetails.txt", if it does not exit, create a new
