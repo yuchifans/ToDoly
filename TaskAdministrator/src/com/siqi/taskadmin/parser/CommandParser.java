@@ -1,6 +1,7 @@
 package com.siqi.taskadmin.parser;
 
 import com.siqi.taskadmin.menu.CommandMenu;
+import com.siqi.taskadmin.menu.CommandWord;
 import com.siqi.taskadmin.util.DataUtil;
 import java.util.Scanner;
 
@@ -9,45 +10,67 @@ import java.util.Scanner;
  * 
  * This parser reads user input and tries to interpret it as a valid command.
  * Every time it is called it reads a line from the terminal and tries to
- * interpret the line as a two-word command. It returns the command as an object
- * of class Command.
+ * interpret the line as command.
  *
  * The parser has a set of known command words. It checks user input against the
  * known commands, and if the input is not one of the known commands, it returns
  * a command object that is marked as an unknown command.
  * 
  * @author Siqi Qian
- * @version 2018.9.13
+ * @version 2018.10.07
  */
 public class CommandParser {
-	private CommandMenu commandMenu; 
-	private Scanner reader; 
-	private String InputCommandWord;
-	
+
+	private Scanner reader;
+	private String inputCommandWord;
+
 	public CommandParser() {
-		commandMenu = new CommandMenu();
 		reader = new Scanner(System.in);
 	}
-	
-	private void readCommand() {
-		System.out.print("> "); 
-		InputCommandWord = reader.nextLine();
+
+	/**
+	 * Get a command from user.
+	 * 
+	 * @return a string of command
+	 */
+	public String readCommand() {
+		System.out.print("> ");
+		inputCommandWord = reader.nextLine();
+		return inputCommandWord;
 	}
-	
-	public Command getTopMenuCommand() {
+
+	/**
+	 * Get a command of number from user. First check whether the command is format
+	 * of an integer(index), if yes, try to get a CommandWord of certain index,
+	 * return CommandWord "UNKNOWN" otherwise.
+	 * 
+	 * @return The CommandWord correspondng to the command, or UNKNOWN if it is not
+	 *         a valid command word.
+	 */
+	public CommandWord getTopMenuCommand() {
 		readCommand();
-		if (DataUtil.isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
-			return new Command(commandMenu.getCommandWord(Integer.parseInt(InputCommandWord)));
+		CommandMenu commandMenu = new CommandMenu();
+		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
+			return commandMenu.getCommandWord(Integer.parseInt(inputCommandWord));
 		}
-		return new Command(CommandWord.UNKNOWN);
+		return CommandWord.UNKNOWN;
 	}
-	
-	public Command getChildMenuCommand(CommandWord commandWord) {
+
+	/**
+	 * Get a command of number from user. First check whether the command is format
+	 * of an integer(index), if yes, try to get a CommandWord of certain index from
+	 * its parent CommandWord, return CommandWord "UNKNOWN" otherwise.
+	 * 
+	 * @param parentCommandWord a parent CommandWord
+	 * @return a certain child commandWord under parent CommandWord corresponding to
+	 *         the valid command which is in number format
+	 */
+	public CommandWord getChildMenuCommand(CommandWord parentCommandWord) {
 		readCommand();
-		if (DataUtil.isInteger(InputCommandWord) && !InputCommandWord.equals("")) {
-			return new Command(commandWord.getSingleChildCommandWord(Integer.parseInt(InputCommandWord)));
+		if (DataUtil.isInteger(inputCommandWord) && !inputCommandWord.equals("")) {
+			return parentCommandWord.getSingleChildCommandWord(Integer.parseInt(inputCommandWord));
 		}
-		return new Command(CommandWord.UNKNOWN);
+		return CommandWord.UNKNOWN;
 	}
 
 }
