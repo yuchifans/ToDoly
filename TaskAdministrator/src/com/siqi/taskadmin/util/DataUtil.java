@@ -21,7 +21,7 @@ public class DataUtil {
 	 * print an exception messege otherwise.
 	 * 
 	 * @param dateStr The string to be verified
-	 * @return an object of Date
+	 * @return an object of Date  
 	 */
 	public static Date createDate(String dateStr) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
