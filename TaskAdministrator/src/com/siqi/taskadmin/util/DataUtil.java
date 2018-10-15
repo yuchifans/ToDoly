@@ -83,4 +83,5 @@ public class DataUtil {
 		Pattern pattern = Pattern.compile("^[0-1]{1}$");
 		return pattern.matcher(str.trim()).matches();
 	}
+	
 }
